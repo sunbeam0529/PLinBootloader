@@ -36,9 +36,10 @@ public:
     QPushButton *btnFresh;
     QLabel *label_2;
     QLabel *label_3;
-    QPushButton *btnConnect;
     QComboBox *cbbSelectChenal;
     QComboBox *cbbSelectBaudrate;
+    QPushButton *btnConnect;
+    QPushButton *btnStop;
     QWidget *tab_2;
     QPushButton *btnDID_ReadSW;
     QPushButton *btnDID_ReadHW;
@@ -66,6 +67,7 @@ public:
     QLabel *lbl_DIDSW_8;
     QLabel *lbl_DIDSW_3;
     QTextBrowser *textBrowser;
+    QPushButton *btnClear;
 
     void setupUi(QMainWindow *PLinBootloaderClass)
     {
@@ -132,11 +134,6 @@ public:
 
         gridLayout->addWidget(label_3, 2, 0, 1, 1);
 
-        btnConnect = new QPushButton(layoutWidget);
-        btnConnect->setObjectName(QString::fromUtf8("btnConnect"));
-
-        gridLayout->addWidget(btnConnect, 2, 4, 1, 1);
-
         cbbSelectChenal = new QComboBox(layoutWidget);
         cbbSelectChenal->setObjectName(QString::fromUtf8("cbbSelectChenal"));
 
@@ -147,6 +144,16 @@ public:
         cbbSelectBaudrate->setObjectName(QString::fromUtf8("cbbSelectBaudrate"));
 
         gridLayout->addWidget(cbbSelectBaudrate, 2, 1, 1, 2);
+
+        btnConnect = new QPushButton(layoutWidget);
+        btnConnect->setObjectName(QString::fromUtf8("btnConnect"));
+
+        gridLayout->addWidget(btnConnect, 2, 3, 1, 1);
+
+        btnStop = new QPushButton(layoutWidget);
+        btnStop->setObjectName(QString::fromUtf8("btnStop"));
+
+        gridLayout->addWidget(btnStop, 2, 4, 1, 1);
 
         tabWidget->addTab(tab, QString());
         tab_2 = new QWidget();
@@ -289,12 +296,15 @@ public:
         tabWidget->addTab(tab_3, QString());
         textBrowser = new QTextBrowser(centralWidget);
         textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
-        textBrowser->setGeometry(QRect(380, 30, 371, 331));
+        textBrowser->setGeometry(QRect(380, 30, 371, 311));
+        btnClear = new QPushButton(centralWidget);
+        btnClear->setObjectName(QString::fromUtf8("btnClear"));
+        btnClear->setGeometry(QRect(680, 340, 75, 23));
         PLinBootloaderClass->setCentralWidget(centralWidget);
 
         retranslateUi(PLinBootloaderClass);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(PLinBootloaderClass);
@@ -309,9 +319,10 @@ public:
         btnFresh->setText(QApplication::translate("PLinBootloaderClass", "\345\210\267\346\226\260", nullptr));
         label_2->setText(QApplication::translate("PLinBootloaderClass", "\351\200\232\351\201\223", nullptr));
         label_3->setText(QApplication::translate("PLinBootloaderClass", "\346\263\242\347\211\271\347\216\207", nullptr));
-        btnConnect->setText(QApplication::translate("PLinBootloaderClass", "\350\277\236\346\216\245", nullptr));
         cbbSelectBaudrate->setItemText(0, QApplication::translate("PLinBootloaderClass", "19200", nullptr));
 
+        btnConnect->setText(QApplication::translate("PLinBootloaderClass", "\350\277\236\346\216\245", nullptr));
+        btnStop->setText(QApplication::translate("PLinBootloaderClass", "\345\201\234\346\255\242", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266", nullptr));
         btnDID_ReadSW->setText(QApplication::translate("PLinBootloaderClass", "\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
         btnDID_ReadHW->setText(QApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
@@ -336,6 +347,7 @@ public:
         lbl_DIDSW_8->setText(QApplication::translate("PLinBootloaderClass", "\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
         lbl_DIDSW_3->setText(QApplication::translate("PLinBootloaderClass", "\345\256\242\346\210\267\344\273\266\345\217\267-------------", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("PLinBootloaderClass", "bootloader", nullptr));
+        btnClear->setText(QApplication::translate("PLinBootloaderClass", "\346\270\205\347\251\272", nullptr));
     } // retranslateUi
 
 };

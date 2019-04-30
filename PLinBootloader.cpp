@@ -7,6 +7,8 @@ PLinBootloader::PLinBootloader(QWidget *parent)
 {
 	ui.setupUi(this);
 	this->Display(u8"加载成功"); 
+	ui.btnStop->setEnabled(FALSE);
+	ui.btnStop->setEnabled(FALSE);
 	if (this->LoadDLL() == LOADDLL_ERR)
 	{
 		MessageBox(NULL, TEXT("Error: \"找不到PLinApi.dll!\""), TEXT("Error!"), MB_ICONERROR);
@@ -19,12 +21,19 @@ PLinBootloader::PLinBootloader(QWidget *parent)
 	*/
 }
 
+PLinBootloader::~PLinBootloader(void)
+{
+	DoLINDisconnect();
+	FreeLibrary(m_hDll);
+}
+
 
 void PLinBootloader::Display(string s) 
 {
 	ui.textBrowser->append(QString::fromStdString(s));
 	
 }
+
 
 void PLinBootloader::on_btnFresh_clicked(void)
 {
@@ -38,9 +47,21 @@ void PLinBootloader::on_btnConnect_clicked(void)
 	DoLINConnect();
 }
 
+void PLinBootloader::on_btnStop_clicked(void)
+{
+	//this->Display(u8"加载成功");
+	DoLINDisconnect();
+}
+
+void PLinBootloader::on_btnClear_clicked(void)
+{
+	ui.textBrowser->clear();
+}
+
 void PLinBootloader::on_btnDID_ReadSW_clicked(void)
 {
-	this->Display(u8"加载成功");
+	this->Display(u8"读取软件版本号");
+	Transmit3DHead();
 }
 
 void PLinBootloader::on_btnDID_ReadHW_clicked(void)
@@ -67,6 +88,13 @@ void PLinBootloader::on_btnSelectAppFile_clicked(void)
 void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 {
 	this->Display(u8"加载成功");
+	BYTE temp[8] = { 1,2,3,4,5,6,7,8 };
+	Write3C(temp);
+	Sleep(10);
+	temp[0] = 0xff;
+	Write3C(temp);
+	Sleep(10);
+	ReadMsg();
 }
 
 
@@ -166,6 +194,10 @@ void PLinBootloader::FreshHW(void)
 	if (HWCount == 0)
 		HWCount = 16;
 	pHWbuf = (HLINHW*)realloc(pHWbuf,HWCount * sizeof(HLINHW));
+	if (pHWbuf == NULL)
+	{
+		pHWbuf = (HLINHW*)malloc(HWCount * sizeof(HLINHW));
+	}
 	errcode = GetAvailableHardware(pHWbuf, HWCount * sizeof(HLINHW), &HWCount);
 	if (errcode != errOK)
 	{
@@ -224,6 +256,7 @@ void PLinBootloader::DoLINConnect(void)
 {
 	HLINHW HWtemp;
 	DWORD result;
+	unsigned long long filter;
 	if (AvailableHW == NULL)
 	{
 		Display(u8"没有硬件");
@@ -244,16 +277,145 @@ void PLinBootloader::DoLINConnect(void)
 		Display(u8"连接失败");
 		return;
 	}
+	m_hHW = HWtemp;
 	InitializeHardware(m_hClient, HWtemp, modMaster, ui.cbbSelectBaudrate->currentText().toInt());
-	// TODO: 增加滤波
-
+	filter = 0xFFFFFFFFFFFFFFFF;
+	SetClientFilter(m_hClient, m_hHW, filter);
+	GetClientFilter(m_hClient, m_hHW, &filter);
+	ui.textBrowser->append(QString::number(filter, 16));
+	ui.btnStop->setEnabled(TRUE);
+	ui.btnConnect->setEnabled(FALSE);
+	Display(u8"连接成功");
 }
 
 void PLinBootloader::DoLINDisconnect(void)
 {
+	if (m_hHW != NULL && m_hClient != NULL)
+	{
+		DisconnectClient(m_hClient, m_hHW);
+		RemoveClient(m_hClient);
+		m_hClient = NULL;
+		m_hHW = NULL;
+	}
+	ui.btnConnect->setEnabled(TRUE);
+	ui.btnStop->setEnabled(FALSE);
+}
+
+void PLinBootloader::Write3C(BYTE *buf)
+{
+	TLINMsg msg;
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	msg.FrameId = 0x3C;
+	msg.Direction = dirPublisher;
+	msg.Length = 8;
+	msg.ChecksumType = cstClassic;
+	for (int i = 0; i < 8; i++)
+		msg.Data[i] = buf[i];
+	CalculateChecksum(&msg);
+	Write(m_hClient, m_hHW, &msg);
+}
+
+void PLinBootloader::Transmit3DHead(void)
+{
+	TLINMsg msg;
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	msg.FrameId = 0x7D;
+	msg.Direction = dirSubscriber;
+	msg.Length = 8;
+	msg.ChecksumType = cstClassic;
+	for (int i = 0; i < 8; i++)
+		msg.Data[i] = 0;
+	CalculateChecksum(&msg);
+	Write(m_hClient, m_hHW, &msg);
+}
+
+void PLinBootloader::Read3D(void)
+{
+	TLINRcvMsg RcvMsg;
+	Transmit3DHead();
+	Read(m_hClient, &RcvMsg);
 
 }
 
+void PLinBootloader::ReadMsg(void)
+{
+	TLINRcvMsg RcvMsg;
+	TLINError IsEmpty = errOK;
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+
+	while (!(IsEmpty & errRcvQueueEmpty))
+	{
+		IsEmpty = Read(m_hClient, &RcvMsg);
+		if (IsEmpty != errOK)
+			continue;
+		if (RcvMsg.Type != mstStandard)
+			continue;
+		if (RcvMsg.ErrorFlags != MSG_ERR_OK)
+			continue;
+		//if (RcvMsg.FrameId != 0x3C && RcvMsg.FrameId != 0x7D)
+			//continue;
+		QString str = "0x";
+		str.append(QString::number(RcvMsg.FrameId, 16));
+		str.append(":");
+		for (int i = 0; i < RcvMsg.Length; i++)
+		{
+			str.append(QString::number(RcvMsg.Data[i], 16));
+			str.append(" ");
+		}
+		QString strtemp(str.toUpper());
+		ui.textBrowser->append(strtemp);
+		
+	}
+}
+
+void PLinBootloader::ReadMsg(BYTE* data)
+{
+	TLINRcvMsg RcvMsg;
+	TLINError IsEmpty = errOK;
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+
+	while (!(IsEmpty & errRcvQueueEmpty))
+	{
+		IsEmpty = Read(m_hClient, &RcvMsg);
+		if (IsEmpty != errOK)
+			continue;
+		if (RcvMsg.Type != mstStandard)
+			continue;
+		if (RcvMsg.ErrorFlags != MSG_ERR_OK)
+			continue;
+		//if (RcvMsg.FrameId != 0x3C && RcvMsg.FrameId != 0x7D)
+			//continue;
+		QString str = "0x";
+		str.append(QString::number(RcvMsg.FrameId, 16));
+		str.append(":");
+		for (int i = 0; i < RcvMsg.Length; i++)
+		{
+			str.append(QString::number(RcvMsg.Data[i], 16));
+			str.append(" ");
+			if (RcvMsg.FrameId == 0x7D)
+				data[i] = RcvMsg.Data[i];
+		}
+		QString strtemp(str.toUpper());
+		ui.textBrowser->append(strtemp);
+
+	}
+}
 
 FARPROC PLinBootloader::GetFunction(LPSTR szName)
 {

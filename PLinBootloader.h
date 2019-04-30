@@ -79,10 +79,13 @@ class PLinBootloader : public QMainWindow
 
 public:
 	PLinBootloader(QWidget *parent = Q_NULLPTR);
+	~PLinBootloader(void);
 
 private slots:
 	void on_btnFresh_clicked(void);
 	void on_btnConnect_clicked(void);
+	void on_btnStop_clicked(void);
+	void on_btnClear_clicked(void);
 	void on_btnDID_ReadSW_clicked(void);
 	void on_btnDID_ReadHW_clicked(void);
 	void on_btnDID_ReadBoot_clicked(void);
@@ -95,6 +98,7 @@ private slots:
 private:
 	HINSTANCE m_hDll = NULL;
 	HLINCLIENT m_hClient = NULL;
+	HLINHW m_hHW;
 	AVAILABLE_HW* AvailableHW;
 	int m_bWasLoaded;
 	Ui::PLinBootloaderClass ui;
@@ -147,7 +151,10 @@ private:
 
 
 
+	
+
 	void Display(string s);
+	
 	int LoadDLL(void);
 
 	void FreshHW(void);
@@ -155,6 +162,16 @@ private:
 	void DoLINConnect(void);
 
 	void DoLINDisconnect(void);
+
+	void Write3C(BYTE* buf);
+
+	void Transmit3DHead(void);
+
+	void Read3D(void);
+
+	void ReadMsg(void);
+
+	void ReadMsg(BYTE* data);
 
 	FARPROC GetFunction(LPSTR szName);
 

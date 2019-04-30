@@ -27,7 +27,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>false</bool>
@@ -125,13 +125,6 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="4">
-        <widget class="QPushButton" name="btnConnect">
-         <property name="text">
-          <string>连接</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="1" colspan="4">
         <widget class="QComboBox" name="cbbSelectChenal"/>
        </item>
@@ -142,6 +135,20 @@
            <string>19200</string>
           </property>
          </item>
+        </widget>
+       </item>
+       <item row="2" column="3">
+        <widget class="QPushButton" name="btnConnect">
+         <property name="text">
+          <string>连接</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="4">
+        <widget class="QPushButton" name="btnStop">
+         <property name="text">
+          <string>停止</string>
+         </property>
         </widget>
        </item>
       </layout>
@@ -607,8 +614,21 @@
       <x>380</x>
       <y>30</y>
       <width>371</width>
-      <height>331</height>
+      <height>311</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnClear">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>340</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>清空</string>
     </property>
    </widget>
   </widget>

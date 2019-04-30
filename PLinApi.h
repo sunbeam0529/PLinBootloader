@@ -82,6 +82,7 @@ typedef WORD HLINHW;                            // Hardware Handle
 
 // Error flags for LIN Rcv Msgs
 //
+#define MSG_ERR_OK						0x0		// No error
 #define MSG_ERR_INCONSISTENT_SYNC       0x1     // Error on Synchronization field
 #define MSG_ERR_ID_PARITY_BIT0          0x2     // Wrong parity Bit 0
 #define MSG_ERR_ID_PARITY_BIT1          0x4     // Wrong parity Bit 1
