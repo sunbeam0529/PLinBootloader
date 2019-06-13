@@ -99,7 +99,7 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 
 void PLinBootloader::on_btnErgodic_clicked(void)
 {
-	int idfrom, idto;
+	int IDfrom, IDto;
 	QString temp;
 	if (m_hClient == NULL)
 	{
@@ -110,16 +110,16 @@ void PLinBootloader::on_btnErgodic_clicked(void)
 	{
 		Display(u8"开始遍历");
 	}
-	temp = ui.lineID1->text();
-	idfrom = temp.toInt();
-	temp = ui.lineID2->text();
-	idto = temp.toInt();
+	temp = ui.lineID1->text();//起始ID
+	IDfrom = temp.toInt();
+	temp = ui.lineID2->text();//结束ID
+	IDto = temp.toInt();
 	temp.clear();
-	for (int id = idfrom; id <= idto; id++)
+	for (int id = IDfrom; id <= IDto; id++)
 	{
-		TransmitID(id);
-		Sleep(10);
-		ReadMsg();
+		TransmitID(id); //发送ID帧头
+		Sleep(10);		//等待10mS
+		ReadMsg();		//读取数据
 	}
 	Display(u8"结束遍历");
 }
