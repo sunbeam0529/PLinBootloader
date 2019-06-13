@@ -62,5 +62,14 @@
     <ClInclude Include="CGlobalFrameTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="E:\文档\其它文档\image\201820323009650610.png" />
   </ItemGroup>
 </Project>

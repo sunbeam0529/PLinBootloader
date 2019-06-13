@@ -10,6 +10,7 @@
 #define UI_PLINBOOTLOADER_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QGridLayout>
@@ -84,6 +85,9 @@ public:
         if (PLinBootloaderClass->objectName().isEmpty())
             PLinBootloaderClass->setObjectName(QString::fromUtf8("PLinBootloaderClass"));
         PLinBootloaderClass->resize(764, 378);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8("E:/\346\226\207\346\241\243/\345\205\266\345\256\203\346\226\207\346\241\243/image/201820323009650610.png"), QSize(), QIcon::Normal, QIcon::Off);
+        PLinBootloaderClass->setWindowIcon(icon);
         centralWidget = new QWidget(PLinBootloaderClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         tabWidget = new QTabWidget(centralWidget);

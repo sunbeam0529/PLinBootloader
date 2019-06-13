@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>PLinBootloader</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>E:/文档/其它文档/image/201820323009650610.png</normaloff>E:/文档/其它文档/image/201820323009650610.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QTabWidget" name="tabWidget">
     <property name="enabled">

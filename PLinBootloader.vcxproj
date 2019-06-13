@@ -129,6 +129,13 @@
   <ItemGroup>
     <ClInclude Include="CGlobalFrameTable.h" />
     <ClInclude Include="PLinApi.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="E:\文档\其它文档\image\201820323009650610.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
