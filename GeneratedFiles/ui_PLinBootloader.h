@@ -13,6 +13,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
@@ -66,6 +67,15 @@ public:
     QLabel *lbl_DIDSW_9;
     QLabel *lbl_DIDSW_8;
     QLabel *lbl_DIDSW_3;
+    QWidget *tab_4;
+    QLabel *label_6;
+    QWidget *layoutWidget2;
+    QHBoxLayout *horizontalLayout;
+    QLabel *label_4;
+    QLineEdit *lineID1;
+    QLabel *label_5;
+    QLineEdit *lineID2;
+    QPushButton *btnErgodic;
     QTextBrowser *textBrowser;
     QPushButton *btnClear;
 
@@ -294,6 +304,45 @@ public:
         gridLayout_2->addWidget(lbl_DIDSW_3, 3, 1, 1, 1);
 
         tabWidget->addTab(tab_3, QString());
+        tab_4 = new QWidget();
+        tab_4->setObjectName(QString::fromUtf8("tab_4"));
+        label_6 = new QLabel(tab_4);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
+        label_6->setGeometry(QRect(30, 30, 31, 21));
+        layoutWidget2 = new QWidget(tab_4);
+        layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
+        layoutWidget2->setGeometry(QRect(80, 30, 261, 25));
+        horizontalLayout = new QHBoxLayout(layoutWidget2);
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        label_4 = new QLabel(layoutWidget2);
+        label_4->setObjectName(QString::fromUtf8("label_4"));
+
+        horizontalLayout->addWidget(label_4);
+
+        lineID1 = new QLineEdit(layoutWidget2);
+        lineID1->setObjectName(QString::fromUtf8("lineID1"));
+
+        horizontalLayout->addWidget(lineID1);
+
+        label_5 = new QLabel(layoutWidget2);
+        label_5->setObjectName(QString::fromUtf8("label_5"));
+
+        horizontalLayout->addWidget(label_5);
+
+        lineID2 = new QLineEdit(layoutWidget2);
+        lineID2->setObjectName(QString::fromUtf8("lineID2"));
+
+        horizontalLayout->addWidget(lineID2);
+
+        btnErgodic = new QPushButton(layoutWidget2);
+        btnErgodic->setObjectName(QString::fromUtf8("btnErgodic"));
+
+        horizontalLayout->addWidget(btnErgodic);
+
+        tabWidget->addTab(tab_4, QString());
         textBrowser = new QTextBrowser(centralWidget);
         textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
         textBrowser->setGeometry(QRect(380, 30, 371, 311));
@@ -304,7 +353,7 @@ public:
 
         retranslateUi(PLinBootloaderClass);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(PLinBootloaderClass);
@@ -328,25 +377,31 @@ public:
         btnDID_ReadHW->setText(QApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
         btnDID_ReadModel->setText(QApplication::translate("PLinBootloaderClass", "\345\236\213\345\217\267", nullptr));
         btnDID_ReadPartnum->setText(QApplication::translate("PLinBootloaderClass", "\345\256\242\346\210\267\344\273\266\345\217\267", nullptr));
-        lbl_DIDSW->setText(QApplication::translate("PLinBootloaderClass", "\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267-------------", nullptr));
-        lbl_DIDHW->setText(QApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266\347\211\210\346\234\254\345\217\267-------------", nullptr));
-        lbl_DIDMODEL->setText(QApplication::translate("PLinBootloaderClass", "\345\236\213\345\217\267-------------", nullptr));
-        lbl_DIDPART->setText(QApplication::translate("PLinBootloaderClass", "\345\256\242\346\210\267\344\273\266\345\217\267-------------", nullptr));
+        lbl_DIDSW->setText(QString());
+        lbl_DIDHW->setText(QString());
+        lbl_DIDMODEL->setText(QString());
+        lbl_DIDPART->setText(QString());
         btnDID_ReadBoot->setText(QApplication::translate("PLinBootloaderClass", "Boot\347\211\210\346\234\254\345\217\267", nullptr));
-        lbl_DIDBOOT->setText(QApplication::translate("PLinBootloaderClass", "boot\347\211\210\346\234\254\345\217\267-------------", nullptr));
+        lbl_DIDBOOT->setText(QString());
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("PLinBootloaderClass", "\350\257\212\346\226\255", nullptr));
         lbl_DIDSW_6->setText(QApplication::translate("PLinBootloaderClass", "\351\200\211\346\213\251app\346\226\207\344\273\266", nullptr));
         btnSelectAppFile->setText(QApplication::translate("PLinBootloaderClass", "...", nullptr));
         btnOneKeyBoot->setText(QApplication::translate("PLinBootloaderClass", "\344\270\200\351\224\256bootloader", nullptr));
-        lbl_DIDSW_2->setText(QApplication::translate("PLinBootloaderClass", "\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267-------------", nullptr));
-        lbl_DIDBOOT_2->setText(QApplication::translate("PLinBootloaderClass", "boot\347\211\210\346\234\254\345\217\267-------------", nullptr));
+        lbl_DIDSW_2->setText(QString());
+        lbl_DIDBOOT_2->setText(QString());
         lbl_DIDSW_11->setText(QApplication::translate("PLinBootloaderClass", "boot\347\211\210\346\234\254\345\217\267", nullptr));
         lbl_DIDSW_7->setText(QApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
-        lbl_DIDHW_2->setText(QApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266\347\211\210\346\234\254\345\217\267-------------", nullptr));
+        lbl_DIDHW_2->setText(QString());
         lbl_DIDSW_9->setText(QApplication::translate("PLinBootloaderClass", "\346\233\264\346\226\260\345\220\216\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
         lbl_DIDSW_8->setText(QApplication::translate("PLinBootloaderClass", "\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
-        lbl_DIDSW_3->setText(QApplication::translate("PLinBootloaderClass", "\345\256\242\346\210\267\344\273\266\345\217\267-------------", nullptr));
+        lbl_DIDSW_3->setText(QString());
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("PLinBootloaderClass", "bootloader", nullptr));
+        label_6->setText(QApplication::translate("PLinBootloaderClass", "\351\201\215\345\216\206", nullptr));
+        label_4->setText(QApplication::translate("PLinBootloaderClass", "\344\273\216", nullptr));
+        lineID1->setText(QString());
+        label_5->setText(QApplication::translate("PLinBootloaderClass", "\345\210\260", nullptr));
+        btnErgodic->setText(QApplication::translate("PLinBootloaderClass", "\351\201\215\345\216\206", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_4), QApplication::translate("PLinBootloaderClass", "\346\265\213\350\257\225", nullptr));
         btnClear->setText(QApplication::translate("PLinBootloaderClass", "\346\270\205\347\251\272", nullptr));
     } // retranslateUi
 

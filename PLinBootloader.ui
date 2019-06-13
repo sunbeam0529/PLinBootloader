@@ -27,7 +27,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>false</bool>
@@ -234,7 +234,7 @@
        </font>
       </property>
       <property name="text">
-       <string>软件版本号-------------</string>
+       <string/>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_DIDHW">
@@ -261,7 +261,7 @@
        </font>
       </property>
       <property name="text">
-       <string>硬件版本号-------------</string>
+       <string/>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_DIDMODEL">
@@ -288,7 +288,7 @@
        </font>
       </property>
       <property name="text">
-       <string>型号-------------</string>
+       <string/>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_DIDPART">
@@ -315,7 +315,7 @@
        </font>
       </property>
       <property name="text">
-       <string>客户件号-------------</string>
+       <string/>
       </property>
      </widget>
      <widget class="QPushButton" name="btnDID_ReadBoot">
@@ -355,7 +355,7 @@
        </font>
       </property>
       <property name="text">
-       <string>boot版本号-------------</string>
+       <string/>
       </property>
      </widget>
     </widget>
@@ -453,7 +453,7 @@
           </font>
          </property>
          <property name="text">
-          <string>软件版本号-------------</string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -474,7 +474,7 @@
           </font>
          </property>
          <property name="text">
-          <string>boot版本号-------------</string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -537,7 +537,7 @@
           </font>
          </property>
          <property name="text">
-          <string>硬件版本号-------------</string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -600,7 +600,68 @@
           </font>
          </property>
          <property name="text">
-          <string>客户件号-------------</string>
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_4">
+     <attribute name="title">
+      <string>测试</string>
+     </attribute>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>30</y>
+        <width>31</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>遍历</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>30</y>
+        <width>261</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>从</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineID1">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>到</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineID2"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnErgodic">
+         <property name="text">
+          <string>遍历</string>
          </property>
         </widget>
        </item>

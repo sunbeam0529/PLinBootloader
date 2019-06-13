@@ -97,6 +97,32 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 	ReadMsg();
 }
 
+void PLinBootloader::on_btnErgodic_clicked(void)
+{
+	int idfrom, idto;
+	QString temp;
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"开始遍历");
+	}
+	temp = ui.lineID1->text();
+	idfrom = temp.toInt();
+	temp = ui.lineID2->text();
+	idto = temp.toInt();
+	temp.clear();
+	for (int id = idfrom; id <= idto; id++)
+	{
+		TransmitID(id);
+		Sleep(10);
+		ReadMsg();
+	}
+	Display(u8"结束遍历");
+}
 
 int PLinBootloader::LoadDLL(void)
 {
@@ -282,7 +308,7 @@ void PLinBootloader::DoLINConnect(void)
 	filter = 0xFFFFFFFFFFFFFFFF;
 	SetClientFilter(m_hClient, m_hHW, filter);
 	GetClientFilter(m_hClient, m_hHW, &filter);
-	ui.textBrowser->append(QString::number(filter, 16));
+	//ui.textBrowser->append(QString::number(filter, 16));
 	ui.btnStop->setEnabled(TRUE);
 	ui.btnConnect->setEnabled(FALSE);
 	Display(u8"连接成功");
@@ -317,6 +343,35 @@ void PLinBootloader::Write3C(BYTE *buf)
 		msg.Data[i] = buf[i];
 	CalculateChecksum(&msg);
 	Write(m_hClient, m_hHW, &msg);
+}
+
+void PLinBootloader::TransmitID(int id)
+{
+	TLINMsg msg;
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	msg.FrameId = CalculatePID(id);
+	msg.Direction = dirSubscriberAutoLength;//dirPublisher;// 
+	msg.Length = 8;
+	msg.ChecksumType = cstEnhanced;
+	for (int i = 0; i < 8; i++)
+		msg.Data[i] = 0;
+	CalculateChecksum(&msg);
+	Write(m_hClient, m_hHW, &msg);
+}
+
+int PLinBootloader::CalculatePID(int ID)
+{
+	int P0, P1;
+	P0 = (ID & 0x01) ^ ((ID & 0x02) >> 1) ^ ((ID & 0x04) >> 2) ^ ((ID & 0x10) >> 4);
+	P1 = (((ID & 0x02) >> 1) ^ ((ID & 0x08) >> 3) ^ ((ID & 0x10) >> 4) ^ ((ID & 0x20) >> 5));
+	P1 = P1 ^ 0x01;
+	ID = ID | (P0 << 6) | (P1 << 7);
+
+	return ID;
 }
 
 void PLinBootloader::Transmit3DHead(void)

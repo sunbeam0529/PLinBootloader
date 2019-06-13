@@ -93,6 +93,8 @@ private slots:
 	void on_btnSelectAppFile_clicked(void);
 	void on_btnOneKeyBoot_clicked(void);
 
+	void on_btnErgodic_clicked(void);
+
 	
 
 private:
@@ -164,6 +166,10 @@ private:
 	void DoLINDisconnect(void);
 
 	void Write3C(BYTE* buf);
+
+	void TransmitID(int id);
+
+	int CalculatePID(int id);
 
 	void Transmit3DHead(void);
 
