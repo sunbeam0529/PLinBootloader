@@ -90,6 +90,7 @@ private slots:
 	void on_btnDID_ReadHW_clicked(void);
 	void on_btnDID_ReadBoot_clicked(void);
 	void on_btnDID_ReadPartnum_clicked(void);
+	void on_btnDID_ReadModel_clicked(void);
 	void on_btnSelectAppFile_clicked(void);
 	void on_btnOneKeyBoot_clicked(void);
 
@@ -174,6 +175,10 @@ private:
 	void Transmit3DHead(void);
 
 	void Read3D(void);
+
+	void ProcessDiag(BYTE* buffer);
+
+	void putdata(BYTE* src, BYTE* dst, int len);
 
 	void ReadMsg(void);
 

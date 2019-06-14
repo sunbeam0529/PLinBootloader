@@ -60,41 +60,128 @@ void PLinBootloader::on_btnClear_clicked(void)
 
 void PLinBootloader::on_btnDID_ReadSW_clicked(void)
 {
-	this->Display(u8"读取软件版本号");
-	Transmit3DHead();
+	BYTE temp[8] = { 0x21,0x03,0x22,0xf1,0x94,0xff,0xff,0xff };
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"读取软件版本号");
+	}
+	TransmitID(0);
+	Sleep(10);
+	Write3C(temp);
+	Sleep(10);
+	ReadMsg();
+	Read3D();
 }
 
 void PLinBootloader::on_btnDID_ReadHW_clicked(void)
 {
-	this->Display(u8"加载成功");
+	BYTE temp[8] = { 0x21,0x03,0x22,0xf1,0x92,0xff,0xff,0xff };
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"读取硬件版本号");
+	}
+	TransmitID(0);
+	Sleep(10);
+	Write3C(temp);
+	Sleep(10);
+	ReadMsg();
+	Read3D();
 }
 
 void PLinBootloader::on_btnDID_ReadBoot_clicked(void)
 {
-	this->Display(u8"加载成功");
+	BYTE temp[8] = { 0x21,0x03,0x22,0xf1,0x90,0xff,0xff,0xff };
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"读取Bootloader版本号");
+	}
+	TransmitID(0);
+	Sleep(10);
+	Write3C(temp);
+	Sleep(10);
+	ReadMsg();
+	Read3D();
 }
 
 void PLinBootloader::on_btnDID_ReadPartnum_clicked(void)
 {
-	this->Display(u8"加载成功");
+	BYTE temp[8] = { 0x21,0x03,0x22,0xf1,0x03,0xff,0xff,0xff };
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"读取零件号");
+	}
+	TransmitID(0);
+	Sleep(10);
+	Write3C(temp);
+	Sleep(10);
+	ReadMsg();
+	Read3D();
+}
+
+void PLinBootloader::on_btnDID_ReadModel_clicked(void)
+{
+	BYTE temp[8] = { 0x21,0x03,0x22,0xf1,0x10,0xff,0xff,0xff };
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"读取型号");
+	}
+	TransmitID(0);
+	Sleep(10);
+	Write3C(temp);
+	Sleep(10);
+	ReadMsg();
+	Read3D();
 }
 
 
 void PLinBootloader::on_btnSelectAppFile_clicked(void)
 {
-	this->Display(u8"加载成功");
+	BYTE temp[8] = { 0x21,0x03,0x22,0xf1,0x10,0xff,0xff,0xff };
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"读取软件版本号");
+	}
+	TransmitID(0);
+	Write3C(temp);
+	Sleep(10);
+	ReadMsg();
+	Read3D();
 }
 
 void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 {
-	this->Display(u8"加载成功");
-	BYTE temp[8] = { 1,2,3,4,5,6,7,8 };
-	Write3C(temp);
-	Sleep(10);
-	temp[0] = 0xff;
-	Write3C(temp);
-	Sleep(10);
-	ReadMsg();
+	this->Display(u8"唤醒");
+	XmtWakeUp(m_hClient, m_hHW);
 }
 
 void PLinBootloader::on_btnErgodic_clicked(void)
@@ -395,9 +482,88 @@ void PLinBootloader::Transmit3DHead(void)
 void PLinBootloader::Read3D(void)
 {
 	TLINRcvMsg RcvMsg;
+	BYTE temp[8], buffer[60] = {0}, * pbuffer;
 	Transmit3DHead();
-	Read(m_hClient, &RcvMsg);
+	Sleep(10);
+	temp[0] = 0x00;
+	ReadMsg(temp);
+	pbuffer = buffer;
+	while (temp[0] == 0x21)
+	{
+		if (temp[1] == 0x10)
+		{
+			putdata(temp + 2, pbuffer, 6);
+			pbuffer += 6;
+		}
+		else if (temp[1] >= 0x20)
+		{
+			putdata(temp + 2, pbuffer, 6);
+			pbuffer += 6;
+		}
+		else if (temp[1] < 7)
+		{
+			putdata(temp + 1, buffer, temp[1]);
 
+			break;
+		}
+
+
+		Transmit3DHead();
+		Sleep(10);
+		temp[0] = 0x00;
+		ReadMsg(temp);
+	}
+	ProcessDiag(buffer);
+}
+
+void PLinBootloader::ProcessDiag(BYTE* buffer)
+{
+	int len = buffer[0];
+	int DID = 0;
+	if (len == 0)return;
+	if (buffer[1] == 0x62)
+	{
+		DID = buffer[2];
+		DID <<= 8;
+		DID |= buffer[3];
+		if (DID == 0xF194)
+		{
+			buffer[len+1] = '\0';
+			//Display((char *)(&buffer[4]));
+			ui.lbl_DIDSW->setText(QString::fromStdString((char*)(&buffer[4])));
+			ui.lbl_DIDSW_2->setText(QString::fromStdString((char*)(&buffer[4])));
+		}
+		else if (DID == 0xF192)
+		{
+			buffer[len + 1] = '\0';
+			ui.lbl_DIDHW->setText(QString::fromStdString((char*)(&buffer[4])));
+			ui.lbl_DIDHW_2->setText(QString::fromStdString((char*)(&buffer[4])));
+		}
+		else if (DID == 0xF190)
+		{
+			buffer[len + 1] = '\0';
+			ui.lbl_DIDBOOT->setText(QString::fromStdString((char*)(&buffer[4])));
+			ui.lbl_DIDBOOT_2->setText(QString::fromStdString((char*)(&buffer[4])));
+		}
+		else if (DID == 0xF110)
+		{
+			buffer[len + 1] = '\0';
+			ui.lbl_DIDMODEL->setText(QString::fromStdString((char*)(&buffer[4])));
+		}
+		else if (DID == 0xF103)
+		{
+			buffer[len + 1] = '\0';
+			ui.lbl_DIDPART->setText(QString::fromStdString((char*)(&buffer[4])));
+		}
+	}
+}
+
+void PLinBootloader::putdata(BYTE* src, BYTE* dst, int len)
+{
+	while (len--)
+	{
+		*dst++ = *src++;
+	}
 }
 
 void PLinBootloader::ReadMsg(void)

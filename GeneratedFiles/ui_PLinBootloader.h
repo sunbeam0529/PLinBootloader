@@ -55,18 +55,18 @@ public:
     QLabel *lbl_DIDBOOT;
     QWidget *tab_3;
     QLineEdit *lineEdit;
-    QLabel *lbl_DIDSW_6;
+    QLabel *lbl_lable_5;
     QPushButton *btnSelectAppFile;
     QPushButton *btnOneKeyBoot;
     QWidget *layoutWidget1;
     QGridLayout *gridLayout_2;
     QLabel *lbl_DIDSW_2;
     QLabel *lbl_DIDBOOT_2;
-    QLabel *lbl_DIDSW_11;
-    QLabel *lbl_DIDSW_7;
+    QLabel *lbl_lable_3;
+    QLabel *lbl_lable_2;
     QLabel *lbl_DIDHW_2;
-    QLabel *lbl_DIDSW_9;
-    QLabel *lbl_DIDSW_8;
+    QLabel *lbl_lable_4;
+    QLabel *lbl_lable_1;
     QLabel *lbl_DIDSW_3;
     QWidget *tab_4;
     QLabel *label_6;
@@ -223,12 +223,12 @@ public:
         lineEdit = new QLineEdit(tab_3);
         lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
         lineEdit->setGeometry(QRect(10, 40, 331, 20));
-        lbl_DIDSW_6 = new QLabel(tab_3);
-        lbl_DIDSW_6->setObjectName(QString::fromUtf8("lbl_DIDSW_6"));
-        lbl_DIDSW_6->setGeometry(QRect(10, 10, 171, 21));
-        sizePolicy.setHeightForWidth(lbl_DIDSW_6->sizePolicy().hasHeightForWidth());
-        lbl_DIDSW_6->setSizePolicy(sizePolicy);
-        lbl_DIDSW_6->setFont(font);
+        lbl_lable_5 = new QLabel(tab_3);
+        lbl_lable_5->setObjectName(QString::fromUtf8("lbl_lable_5"));
+        lbl_lable_5->setGeometry(QRect(10, 10, 171, 21));
+        sizePolicy.setHeightForWidth(lbl_lable_5->sizePolicy().hasHeightForWidth());
+        lbl_lable_5->setSizePolicy(sizePolicy);
+        lbl_lable_5->setFont(font);
         btnSelectAppFile = new QPushButton(tab_3);
         btnSelectAppFile->setObjectName(QString::fromUtf8("btnSelectAppFile"));
         btnSelectAppFile->setGeometry(QRect(250, 10, 75, 23));
@@ -259,21 +259,21 @@ public:
 
         gridLayout_2->addWidget(lbl_DIDBOOT_2, 2, 1, 1, 1);
 
-        lbl_DIDSW_11 = new QLabel(layoutWidget1);
-        lbl_DIDSW_11->setObjectName(QString::fromUtf8("lbl_DIDSW_11"));
-        sizePolicy.setHeightForWidth(lbl_DIDSW_11->sizePolicy().hasHeightForWidth());
-        lbl_DIDSW_11->setSizePolicy(sizePolicy);
-        lbl_DIDSW_11->setFont(font);
+        lbl_lable_3 = new QLabel(layoutWidget1);
+        lbl_lable_3->setObjectName(QString::fromUtf8("lbl_lable_3"));
+        sizePolicy.setHeightForWidth(lbl_lable_3->sizePolicy().hasHeightForWidth());
+        lbl_lable_3->setSizePolicy(sizePolicy);
+        lbl_lable_3->setFont(font);
 
-        gridLayout_2->addWidget(lbl_DIDSW_11, 2, 0, 1, 1);
+        gridLayout_2->addWidget(lbl_lable_3, 2, 0, 1, 1);
 
-        lbl_DIDSW_7 = new QLabel(layoutWidget1);
-        lbl_DIDSW_7->setObjectName(QString::fromUtf8("lbl_DIDSW_7"));
-        sizePolicy.setHeightForWidth(lbl_DIDSW_7->sizePolicy().hasHeightForWidth());
-        lbl_DIDSW_7->setSizePolicy(sizePolicy);
-        lbl_DIDSW_7->setFont(font);
+        lbl_lable_2 = new QLabel(layoutWidget1);
+        lbl_lable_2->setObjectName(QString::fromUtf8("lbl_lable_2"));
+        sizePolicy.setHeightForWidth(lbl_lable_2->sizePolicy().hasHeightForWidth());
+        lbl_lable_2->setSizePolicy(sizePolicy);
+        lbl_lable_2->setFont(font);
 
-        gridLayout_2->addWidget(lbl_DIDSW_7, 1, 0, 1, 1);
+        gridLayout_2->addWidget(lbl_lable_2, 1, 0, 1, 1);
 
         lbl_DIDHW_2 = new QLabel(layoutWidget1);
         lbl_DIDHW_2->setObjectName(QString::fromUtf8("lbl_DIDHW_2"));
@@ -283,21 +283,21 @@ public:
 
         gridLayout_2->addWidget(lbl_DIDHW_2, 1, 1, 1, 1);
 
-        lbl_DIDSW_9 = new QLabel(layoutWidget1);
-        lbl_DIDSW_9->setObjectName(QString::fromUtf8("lbl_DIDSW_9"));
-        sizePolicy.setHeightForWidth(lbl_DIDSW_9->sizePolicy().hasHeightForWidth());
-        lbl_DIDSW_9->setSizePolicy(sizePolicy);
-        lbl_DIDSW_9->setFont(font);
+        lbl_lable_4 = new QLabel(layoutWidget1);
+        lbl_lable_4->setObjectName(QString::fromUtf8("lbl_lable_4"));
+        sizePolicy.setHeightForWidth(lbl_lable_4->sizePolicy().hasHeightForWidth());
+        lbl_lable_4->setSizePolicy(sizePolicy);
+        lbl_lable_4->setFont(font);
 
-        gridLayout_2->addWidget(lbl_DIDSW_9, 3, 0, 1, 1);
+        gridLayout_2->addWidget(lbl_lable_4, 3, 0, 1, 1);
 
-        lbl_DIDSW_8 = new QLabel(layoutWidget1);
-        lbl_DIDSW_8->setObjectName(QString::fromUtf8("lbl_DIDSW_8"));
-        sizePolicy.setHeightForWidth(lbl_DIDSW_8->sizePolicy().hasHeightForWidth());
-        lbl_DIDSW_8->setSizePolicy(sizePolicy);
-        lbl_DIDSW_8->setFont(font);
+        lbl_lable_1 = new QLabel(layoutWidget1);
+        lbl_lable_1->setObjectName(QString::fromUtf8("lbl_lable_1"));
+        sizePolicy.setHeightForWidth(lbl_lable_1->sizePolicy().hasHeightForWidth());
+        lbl_lable_1->setSizePolicy(sizePolicy);
+        lbl_lable_1->setFont(font);
 
-        gridLayout_2->addWidget(lbl_DIDSW_8, 0, 0, 1, 1);
+        gridLayout_2->addWidget(lbl_lable_1, 0, 0, 1, 1);
 
         lbl_DIDSW_3 = new QLabel(layoutWidget1);
         lbl_DIDSW_3->setObjectName(QString::fromUtf8("lbl_DIDSW_3"));
@@ -388,16 +388,16 @@ public:
         btnDID_ReadBoot->setText(QApplication::translate("PLinBootloaderClass", "Boot\347\211\210\346\234\254\345\217\267", nullptr));
         lbl_DIDBOOT->setText(QString());
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("PLinBootloaderClass", "\350\257\212\346\226\255", nullptr));
-        lbl_DIDSW_6->setText(QApplication::translate("PLinBootloaderClass", "\351\200\211\346\213\251app\346\226\207\344\273\266", nullptr));
+        lbl_lable_5->setText(QApplication::translate("PLinBootloaderClass", "\351\200\211\346\213\251app\346\226\207\344\273\266", nullptr));
         btnSelectAppFile->setText(QApplication::translate("PLinBootloaderClass", "...", nullptr));
         btnOneKeyBoot->setText(QApplication::translate("PLinBootloaderClass", "\344\270\200\351\224\256bootloader", nullptr));
         lbl_DIDSW_2->setText(QString());
         lbl_DIDBOOT_2->setText(QString());
-        lbl_DIDSW_11->setText(QApplication::translate("PLinBootloaderClass", "boot\347\211\210\346\234\254\345\217\267", nullptr));
-        lbl_DIDSW_7->setText(QApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
+        lbl_lable_3->setText(QApplication::translate("PLinBootloaderClass", "boot\347\211\210\346\234\254\345\217\267", nullptr));
+        lbl_lable_2->setText(QApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
         lbl_DIDHW_2->setText(QString());
-        lbl_DIDSW_9->setText(QApplication::translate("PLinBootloaderClass", "\346\233\264\346\226\260\345\220\216\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
-        lbl_DIDSW_8->setText(QApplication::translate("PLinBootloaderClass", "\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
+        lbl_lable_4->setText(QApplication::translate("PLinBootloaderClass", "\346\233\264\346\226\260\345\220\216\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
+        lbl_lable_1->setText(QApplication::translate("PLinBootloaderClass", "\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
         lbl_DIDSW_3->setText(QString());
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("PLinBootloaderClass", "bootloader", nullptr));
         label_6->setText(QApplication::translate("PLinBootloaderClass", "\351\201\215\345\216\206", nullptr));

@@ -377,7 +377,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QLabel" name="lbl_DIDSW_6">
+     <widget class="QLabel" name="lbl_lable_5">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -483,7 +483,7 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="lbl_DIDSW_11">
+        <widget class="QLabel" name="lbl_lable_3">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -504,7 +504,7 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="lbl_DIDSW_7">
+        <widget class="QLabel" name="lbl_lable_2">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -546,7 +546,7 @@
         </widget>
        </item>
        <item row="3" column="0">
-        <widget class="QLabel" name="lbl_DIDSW_9">
+        <widget class="QLabel" name="lbl_lable_4">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -567,7 +567,7 @@
         </widget>
        </item>
        <item row="0" column="0">
-        <widget class="QLabel" name="lbl_DIDSW_8">
+        <widget class="QLabel" name="lbl_lable_1">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
