@@ -237,6 +237,9 @@
         <bold>false</bold>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">border-color: rgb(111, 111, 111);</string>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -362,12 +365,51 @@
        <string/>
       </property>
      </widget>
+     <widget class="QPushButton" name="btn_BootMode">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>230</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>BootMode</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_AppMode">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>230</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>AppMode</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="bnt_Unlock">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>230</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>解锁</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_3">
      <attribute name="title">
       <string>bootloader</string>
      </attribute>
-     <widget class="QLineEdit" name="lineEdit">
+     <widget class="QLineEdit" name="line_fileaddress">
       <property name="geometry">
        <rect>
         <x>10</x>

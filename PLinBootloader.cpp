@@ -1,6 +1,7 @@
 ﻿#include "PLinBootloader.h"
 #include <stdlib.h>
 #include <windows.h>
+#include <QFileDialog>
 
 PLinBootloader::PLinBootloader(QWidget *parent)
 	: QMainWindow(parent)
@@ -154,14 +155,12 @@ void PLinBootloader::on_btnDID_ReadModel_clicked(void)
 	Sleep(10);
 	Write3C(temp);
 	Sleep(10);
-	ReadMsg();
 	Read3D();
 }
 
-
-void PLinBootloader::on_btnSelectAppFile_clicked(void)
+void PLinBootloader::on_btn_AppMode_clicked(void)
 {
-	BYTE temp[8] = { 0x21,0x03,0x22,0xf1,0x10,0xff,0xff,0xff };
+	BYTE temp[8] = { 0x21,0x02,0x10,0x01,0xff,0xff,0xff,0xff };
 	if (m_hClient == NULL)
 	{
 		Display(u8"硬件未连接");
@@ -169,19 +168,165 @@ void PLinBootloader::on_btnSelectAppFile_clicked(void)
 	}
 	else
 	{
-		Display(u8"读取软件版本号");
+		Display(u8"进入APP");
 	}
 	TransmitID(0);
+	Sleep(10);
 	Write3C(temp);
 	Sleep(10);
 	ReadMsg();
+	Sleep(10);
 	Read3D();
 }
 
+void PLinBootloader::on_btn_BootMode_clicked(void)
+{
+	BYTE temp[8] = { 0x21,0x02,0x10,0x02,0xff,0xff,0xff,0xff };
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"进入BOOT");
+	}
+	TransmitID(0);
+	Sleep(10);
+	Write3C(temp);
+	Sleep(10);
+	ReadMsg();
+	Sleep(10);
+	Read3D();
+}
+
+void PLinBootloader::on_bnt_Unlock_clicked(void)
+{
+	BYTE temp[8] = { 0x21,0x02,0x27,0x01,0xff,0xff,0xff,0xff };
+	INT16 seed;
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"安全访问解锁");
+	}
+	TransmitID(0);
+	Sleep(10);
+	Write3C(temp);
+	Sleep(10);
+	Transmit3DHead();
+	Sleep(10);
+	temp[0] = 0;
+	ReadMsg(temp);
+
+	if (temp[0] == 0x21 && temp[1] == 0x4 && temp[2] == 0x67)
+	{
+		seed = temp[4];
+		seed <<= 8;
+		seed |= temp[5];
+		seed = ~seed + 0x2019;
+		temp[2] = 0x27;
+		temp[3] = 0x02;
+		temp[4] = seed>>8;
+		temp[5] = seed & 0xff;
+		Write3C(temp);
+		Sleep(10);
+		Transmit3DHead();
+		Sleep(10);
+		ReadMsg(temp);
+		if (temp[0] == 0x21 && temp[1] == 0x2 && temp[2] == 0x67 && temp[3] == 0x02)
+			Display(u8"解锁成功");
+	}
+
+}
+
+
+void PLinBootloader::on_btnSelectAppFile_clicked(void)
+{
+	QString File = QFileDialog::getOpenFileName(NULL, u8"打开", ".", "S19 Files (*.sx;*.s19);;All Files (*.*)");
+	ui.line_fileaddress->clear();
+	ui.line_fileaddress->setText(File);
+	if(File != NULL)
+		ProcessS19File(File);
+}
+
+
+
 void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 {
-	this->Display(u8"唤醒");
-	XmtWakeUp(m_hClient, m_hHW);
+	int errortimes;
+	if (ui.line_fileaddress->text() == NULL)
+	{
+		Display(u8"请选择烧写文件");
+		return;
+	}
+	if (AppStack.isEmpty())
+	{
+		Display(u8"烧写文件正确");
+		return;
+	}
+	BootState = 1;
+	on_btnDID_ReadSW_clicked();
+	Sleep(10);
+	on_btnDID_ReadHW_clicked();
+	Sleep(10);
+	on_btnDID_ReadBoot_clicked();
+	Sleep(50);
+	on_btn_BootMode_clicked();
+	Sleep(500);
+	on_btn_BootMode_clicked();
+	Sleep(10);
+	on_bnt_Unlock_clicked();
+	Sleep(10);
+	while (!AppStack.isEmpty())
+	{
+		INT32 address;
+		int len,startpos=0;
+		QByteArray Data = *(AppStack.dequeue());
+		address = AddressStack.dequeue();
+		len = LenStack.dequeue();
+		if (address > 0xff8000 || address < 0xff0000)
+		{
+			//地址错误
+			continue;
+		}
+		//请求下载
+		BYTE temp[8] = { 0x21,0x05,0x34,0x01,address>>16,address >> 8,address,0xff };
+		Write3C(temp);
+		Sleep(10);
+		Transmit3DHead();
+		Sleep(10);
+		temp[0] = 0;
+		ReadMsg(temp);
+		Sleep(100);
+		int blocknum=1,frameid=0x21;
+		BYTE txbuf[64];
+		
+		while (len > 64)
+		{
+			putdata(Data, startpos, txbuf, 64);
+			TransmitBlock((char*)txbuf, 64, blocknum);
+			Transmit3DHead();
+			Sleep(10);
+			temp[0] = 0;
+			ReadMsg(temp);
+			if (temp[0] == 0x21 && temp[1] == 0x2 && temp[2] == 0x76 && temp[3] == blocknum)
+			{
+				//传送成功
+				blocknum++;
+				startpos += 64;
+				len -= 64;
+			}
+		}
+		//发送最后一个块
+		if (len % 2 != 0)//奇数填充为偶数
+		{
+
+		}
+	}
 }
 
 void PLinBootloader::on_btnErgodic_clicked(void)
@@ -414,6 +559,151 @@ void PLinBootloader::DoLINDisconnect(void)
 	ui.btnStop->setEnabled(FALSE);
 }
 
+void PLinBootloader::ProcessS19File(QString FileAddress)
+{
+	QByteArray * tempstack;
+	char readbuf[120];
+	char databuf[120];
+	QString temp,Qreadbuf;
+	int linelen,i,datalen,stacklen,datalenlast;
+	INT32 Address,AddressLast;
+	if (FileAddress == NULL)
+	{
+		return;
+	}
+	else
+	{
+		//初始化局部变量
+		AddressLast = 0;
+		Address = 0;
+		stacklen = 0;
+		AppStack.clear();
+		AddressStack.clear();
+		LenStack.clear();
+	}
+	QFile File(FileAddress);
+	File.open(QIODevice::ReadOnly | QIODevice::Text);
+	linelen = File.readLine(readbuf,120);
+	while (linelen != -1)
+	{
+		if (linelen == 0)
+		{
+			linelen = File.readLine(readbuf, 120);
+			continue;
+		}
+
+		if (readbuf[0] != 'S' && readbuf[0] != 's')//格式不对，读取下一行
+		{
+			linelen = File.readLine(readbuf, 120);
+			continue;
+		}
+		Qreadbuf.clear();
+		Qreadbuf.append(readbuf + 2);
+		temp = Qreadbuf.left(2);
+		datalen = temp.toInt(NULL, 16);
+		Qreadbuf.clear();
+		Qreadbuf.append(readbuf + 4);
+		if (readbuf[1] == '3')	//S3格式
+		{
+			temp = Qreadbuf.left(8);
+			Address = temp.toInt(NULL, 16);
+			Qreadbuf.clear();
+			Qreadbuf.append(readbuf + 12);
+			datalen -= 5;
+		}
+		else if (readbuf[1] == '2')//S2格式
+		{
+			temp = Qreadbuf.left(6);
+			Address = temp.toInt(NULL, 16);
+			Qreadbuf.clear();
+			Qreadbuf.append(readbuf + 10);
+			datalen -= 4;
+		}
+		else if (readbuf[1] == '1')//S1格式
+		{
+			temp = Qreadbuf.left(4);
+			Address = temp.toInt(NULL, 16);
+			Qreadbuf.clear();
+			Qreadbuf.append(readbuf + 8);
+			datalen -= 3;
+		}
+		else if (readbuf[1] == '0')//S0格式
+		{
+			//S0没什么用
+			linelen = File.readLine(readbuf, 120);
+			continue;
+		}
+		else
+		{
+			linelen = File.readLine(readbuf, 120);
+			continue;
+		}
+		
+		if (Address != (AddressLast + datalenlast))
+		{
+			//地址不连续
+			tempstack = new QByteArray;
+			AppStack.enqueue(tempstack);
+			AddressStack.enqueue(Address);
+			if (stacklen != 0)
+			{
+				LenStack.enqueue(stacklen);
+				stacklen = 0;
+			}
+		}
+		AddressLast = Address;
+		datalenlast = datalen;
+		stacklen += datalen;
+		for (i = 0; i < datalen; i++)
+		{
+			temp = Qreadbuf.mid(i*2, 2);
+			tempstack->append((char)temp.toInt(NULL, 16));
+		}
+		linelen = File.readLine(readbuf, 120);
+	}
+	if(stacklen != 0)
+	{
+		LenStack.enqueue(stacklen);
+		stacklen = 0;
+	}
+}
+
+void PLinBootloader::TransmitBlock(char * data, int len,int blockid)
+{
+	BYTE temp[8] = { 0x21,0x10,len,0x36,blockid,0,0,0 };
+	int frameid,i;
+	temp[5] = data[i++];
+	temp[6] = data[i++];
+	temp[7] = data[i++];
+	Write3C(temp);
+	Sleep(10);
+	len -= 3;
+	frameid = 0x21;
+	while (len > 6)
+	{
+		temp[1] = frameid;
+		temp[2] = data[i++];
+		temp[3] = data[i++];
+		temp[4] = data[i++];
+		temp[5] = data[i++];
+		temp[6] = data[i++];
+		temp[7] = data[i++];
+		Write3C(temp);
+		Sleep(10);
+		if (frameid < 0x2F)frameid++;
+		else frameid = 0x20;
+		len -= 6;
+	}
+
+	temp[1] = frameid;
+	for (int j = 2; len > 0; len--,j++)
+	{
+		temp[j] = data[i++];
+	}
+	Write3C(temp);
+	Sleep(10);
+}
+
 void PLinBootloader::Write3C(BYTE *buf)
 {
 	TLINMsg msg;
@@ -566,6 +856,15 @@ void PLinBootloader::putdata(BYTE* src, BYTE* dst, int len)
 	}
 }
 
+void PLinBootloader::putdata(QByteArray src, int start,BYTE* dst, int len)
+{
+	while (len--)
+	{
+		*dst++ = src[start++];
+	}
+}
+
+
 void PLinBootloader::ReadMsg(void)
 {
 	TLINRcvMsg RcvMsg;
@@ -588,7 +887,7 @@ void PLinBootloader::ReadMsg(void)
 		//if (RcvMsg.FrameId != 0x3C && RcvMsg.FrameId != 0x7D)
 			//continue;
 		QString str = "0x";
-		str.append(QString::number(RcvMsg.FrameId, 16));
+		str.append(QString::number(RcvMsg.FrameId & 0x3f, 16));
 		str.append(":");
 		for (int i = 0; i < RcvMsg.Length; i++)
 		{
@@ -623,7 +922,7 @@ void PLinBootloader::ReadMsg(BYTE* data)
 		//if (RcvMsg.FrameId != 0x3C && RcvMsg.FrameId != 0x7D)
 			//continue;
 		QString str = "0x";
-		str.append(QString::number(RcvMsg.FrameId, 16));
+		str.append(QString::number(RcvMsg.FrameId & 0x3f, 16));
 		str.append(":");
 		for (int i = 0; i < RcvMsg.Length; i++)
 		{

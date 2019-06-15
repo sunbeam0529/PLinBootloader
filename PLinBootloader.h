@@ -4,7 +4,7 @@
 #include "ui_PLinBootloader.h"
 #include "PLinApi.h"
 #include <string>
-
+#include <QQueue>
 
 // Function pointers
 //
@@ -91,6 +91,9 @@ private slots:
 	void on_btnDID_ReadBoot_clicked(void);
 	void on_btnDID_ReadPartnum_clicked(void);
 	void on_btnDID_ReadModel_clicked(void);
+	void on_btn_AppMode_clicked(void);
+	void on_btn_BootMode_clicked(void);
+	void on_bnt_Unlock_clicked(void);
 	void on_btnSelectAppFile_clicked(void);
 	void on_btnOneKeyBoot_clicked(void);
 
@@ -104,6 +107,10 @@ private:
 	HLINHW m_hHW;
 	AVAILABLE_HW* AvailableHW;
 	int m_bWasLoaded;
+	QQueue<QByteArray *> AppStack;
+	QQueue<INT32> AddressStack;
+	QQueue<int> LenStack;
+	char BootState;
 	Ui::PLinBootloaderClass ui;
 
 	fpRemoveClient			m_pRemoveClient;
@@ -166,6 +173,10 @@ private:
 
 	void DoLINDisconnect(void);
 
+	void ProcessS19File(QString File);
+
+	void TransmitBlock(char* data, int len, int blockid);
+
 	void Write3C(BYTE* buf);
 
 	void TransmitID(int id);
@@ -179,6 +190,8 @@ private:
 	void ProcessDiag(BYTE* buffer);
 
 	void putdata(BYTE* src, BYTE* dst, int len);
+
+	void putdata(QByteArray src, int start, BYTE* dst, int len);
 
 	void ReadMsg(void);
 
