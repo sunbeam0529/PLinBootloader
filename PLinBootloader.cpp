@@ -265,7 +265,7 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 	}
 	if (AppStack.isEmpty())
 	{
-		Display(u8"烧写文件正确");
+		Display(u8"烧写文件不正确");
 		return;
 	}
 	BootState = 1;
@@ -284,7 +284,7 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 	while (!AppStack.isEmpty())
 	{
 		INT32 address;
-		int len,startpos=0;
+		int len,startpos=0,ret;
 		QByteArray Data = *(AppStack.dequeue());
 		address = AddressStack.dequeue();
 		len = LenStack.dequeue();
@@ -294,37 +294,94 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 			continue;
 		}
 		//请求下载
-		BYTE temp[8] = { 0x21,0x05,0x34,0x01,address>>16,address >> 8,address,0xff };
+		BYTE temp[8] = {0x21,0x10,0x07,0x34,0x01,address>>16,address >> 8,address};
+		BYTE temp2[8] = { 0x21,0x21,len >> 8, len ,0,0,0,0};
 		Write3C(temp);
 		Sleep(10);
-		Transmit3DHead();
-		Sleep(10);
-		temp[0] = 0;
-		ReadMsg(temp);
+		Write3C(temp2);
 		Sleep(100);
+		ret = Wait3D(temp, 100);
+		if (ret == 0)
+		{
+			Display(u8"超时");
+			return;
+		}
+		temp[0] = 0;
+		//ReadMsg(temp);
+		//Sleep(10);
 		int blocknum=1,frameid=0x21;
 		BYTE txbuf[64];
 		
 		while (len > 64)
 		{
+			QString strtemp(u8"block ");
+			strtemp.append(QString::number(blocknum));
+			Display(strtemp.toStdString());
 			putdata(Data, startpos, txbuf, 64);
 			TransmitBlock((char*)txbuf, 64, blocknum);
-			Transmit3DHead();
-			Sleep(10);
-			temp[0] = 0;
-			ReadMsg(temp);
+			Sleep(50);
+			ret = Wait3D(temp, 100);
+			if (ret == 0)
+			{
+				Display(u8"超时");
+				return;
+			}
+			//temp[0] = 0;
+			//ReadMsg(temp);
+			QCoreApplication::processEvents();
 			if (temp[0] == 0x21 && temp[1] == 0x2 && temp[2] == 0x76 && temp[3] == blocknum)
 			{
 				//传送成功
 				blocknum++;
+				if (blocknum >= 256)blocknum = 0;
 				startpos += 64;
 				len -= 64;
+				
+				errortimes = 0;
 			}
+			else
+			{
+				errortimes++;
+				if (errortimes >= 3)
+				{
+					Display(u8"失败");
+					return;
+				}
+			}
+			Sleep(50);
 		}
 		//发送最后一个块
-		if (len % 2 != 0)//奇数填充为偶数
+		putdata(Data, startpos, txbuf, len);
+		while (1)
 		{
-
+			TransmitBlock((char*)txbuf, len, blocknum);
+			//Transmit3DHead();
+			Sleep(10);
+			temp[0] = 0;
+			ret = Wait3D(temp, 100);
+			if (ret == 0)
+			{
+				Display(u8"超时");
+				return;
+			}
+			if (temp[0] == 0x21 && temp[1] == 0x2 && temp[2] == 0x76 && temp[3] == blocknum)
+			{
+				//传送成功
+			
+				QString strtemp(u8"block ");
+				strtemp.append(QString::number(blocknum));
+				Display(strtemp.toStdString());
+				break;
+			}
+			else
+			{
+				errortimes++;
+				if (errortimes >= 3)
+				{
+					Display(u8"失败");
+					return;
+				}
+			}
 		}
 	}
 }
@@ -670,8 +727,8 @@ void PLinBootloader::ProcessS19File(QString FileAddress)
 
 void PLinBootloader::TransmitBlock(char * data, int len,int blockid)
 {
-	BYTE temp[8] = { 0x21,0x10,len,0x36,blockid,0,0,0 };
-	int frameid,i;
+	BYTE temp[8] = { 0x21,0x10,len+2,0x36,blockid,0,0,0 };
+	int frameid,i=0;
 	temp[5] = data[i++];
 	temp[6] = data[i++];
 	temp[7] = data[i++];
@@ -804,6 +861,21 @@ void PLinBootloader::Read3D(void)
 		ReadMsg(temp);
 	}
 	ProcessDiag(buffer);
+}
+
+int PLinBootloader::Wait3D(BYTE* data,int times)
+{
+	while (times-- > 0)
+	{
+		Transmit3DHead();
+		Sleep(10);
+		data[0] = 0;
+		ReadMsg(data);
+		if (data[0] == 0x21)
+			return 1;
+	}
+	return 0;//超时
+
 }
 
 void PLinBootloader::ProcessDiag(BYTE* buffer)

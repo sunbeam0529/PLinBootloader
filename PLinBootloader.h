@@ -187,6 +187,8 @@ private:
 
 	void Read3D(void);
 
+	int Wait3D(BYTE* data, int times);
+
 	void ProcessDiag(BYTE* buffer);
 
 	void putdata(BYTE* src, BYTE* dst, int len);
