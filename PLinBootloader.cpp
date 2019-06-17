@@ -754,9 +754,14 @@ void PLinBootloader::TransmitBlock(char * data, int len,int blockid)
 	}
 
 	temp[1] = frameid;
-	for (int j = 2; len > 0; len--,j++)
+	int j;
+	for (j = 2; len > 0; len--,j++)
 	{
 		temp[j] = data[i++];
+	}
+	for (; j < 8; j++)
+	{
+		temp[j] = 0xff;
 	}
 	Write3C(temp);
 	Sleep(10);
@@ -964,11 +969,13 @@ void PLinBootloader::ReadMsg(void)
 		str.append(":");
 		for (int i = 0; i < RcvMsg.Length; i++)
 		{
-			str.append(QString::number(RcvMsg.Data[i], 16));
+			//str.append(QString::number(RcvMsg.Data[i], 16));
+			str.append("0x");
+			str.append(QString("%1").arg(RcvMsg.Data[i], 2, 16, QChar('0')).toUpper());
 			str.append(" ");
 		}
-		QString strtemp(str.toUpper());
-		ui.textBrowser->append(strtemp);
+		//QString strtemp(str.toUpper());
+		ui.textBrowser->append(str);
 		
 	}
 }
@@ -995,17 +1002,20 @@ void PLinBootloader::ReadMsg(BYTE* data)
 		//if (RcvMsg.FrameId != 0x3C && RcvMsg.FrameId != 0x7D)
 			//continue;
 		QString str = "0x";
-		str.append(QString::number(RcvMsg.FrameId & 0x3f, 16));
+		str.append(QString::number(RcvMsg.FrameId & 0x3f, 16).toUpper());
 		str.append(":");
 		for (int i = 0; i < RcvMsg.Length; i++)
 		{
-			str.append(QString::number(RcvMsg.Data[i], 16));
+			//str.append(QString::number(RcvMsg.Data[i], 16));
+			str.append("0x");
+			str.append(QString("%1").arg(RcvMsg.Data[i], 2, 16, QChar('0')).toUpper());
+			
 			str.append(" ");
 			if (RcvMsg.FrameId == 0x7D)
 				data[i] = RcvMsg.Data[i];
 		}
-		QString strtemp(str.toUpper());
-		ui.textBrowser->append(strtemp);
+		//QString strtemp(str.toUpper());
+		ui.textBrowser->append(str);
 
 	}
 }
