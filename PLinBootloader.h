@@ -5,7 +5,7 @@
 #include "PLinApi.h"
 #include <string>
 #include <QQueue>
-
+#include <QDateTime>
 // Function pointers
 //
 typedef TLINError(__stdcall* fpOneParamCli) (HLINCLIENT);
@@ -110,6 +110,7 @@ private:
 	QQueue<QByteArray *> AppStack;
 	QQueue<INT32> AddressStack;
 	QQueue<int> LenStack;
+	int total, position;
 	char BootState;
 	Ui::PLinBootloaderClass ui;
 

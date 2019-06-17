@@ -14,6 +14,7 @@ PLinBootloader::PLinBootloader(QWidget *parent)
 	{
 		MessageBox(NULL, TEXT("Error: \"找不到PLinApi.dll!\""), TEXT("Error!"), MB_ICONERROR);
 	}
+	ui.progressBar->setValue(0);
 	/*
 	else
 	{
@@ -249,7 +250,7 @@ void PLinBootloader::on_btnSelectAppFile_clicked(void)
 	QString File = QFileDialog::getOpenFileName(NULL, u8"打开", ".", "S19 Files (*.sx;*.s19);;All Files (*.*)");
 	ui.line_fileaddress->clear();
 	ui.line_fileaddress->setText(File);
-
+	ProcessS19File(File);
 }
 
 
@@ -625,7 +626,8 @@ void PLinBootloader::ProcessS19File(QString FileAddress)
 	QString temp,Qreadbuf;
 	int linelen,i,datalen,stacklen,datalenlast;
 	INT32 Address,AddressLast;
-	if (FileAddress == NULL)
+	QFileInfo info(FileAddress);
+	if (!info.exists())
 	{
 		return;
 	}
@@ -638,8 +640,18 @@ void PLinBootloader::ProcessS19File(QString FileAddress)
 		AppStack.clear();
 		AddressStack.clear();
 		LenStack.clear();
+
+		//输出文件信息
+		QString fileinfo = u8"文件名：";
+		fileinfo += info.fileName();
+		Display(fileinfo.toStdString());
+		fileinfo.clear();
+		fileinfo += u8"修改时间：";
+		fileinfo += info.lastModified().toString("yyyy-MM-dd hh:mm:ss");
+		Display(fileinfo.toStdString());
 	}
 	QFile File(FileAddress);
+	
 	File.open(QIODevice::ReadOnly | QIODevice::Text);
 	linelen = File.readLine(readbuf,120);
 	while (linelen != -1)
@@ -724,6 +736,7 @@ void PLinBootloader::ProcessS19File(QString FileAddress)
 		LenStack.enqueue(stacklen);
 		stacklen = 0;
 	}
+	File.close();
 }
 
 void PLinBootloader::TransmitBlock(char * data, int len,int blockid)
