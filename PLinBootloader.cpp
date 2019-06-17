@@ -249,8 +249,7 @@ void PLinBootloader::on_btnSelectAppFile_clicked(void)
 	QString File = QFileDialog::getOpenFileName(NULL, u8"打开", ".", "S19 Files (*.sx;*.s19);;All Files (*.*)");
 	ui.line_fileaddress->clear();
 	ui.line_fileaddress->setText(File);
-	if(File != NULL)
-		ProcessS19File(File);
+
 }
 
 
@@ -263,6 +262,7 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 		Display(u8"请选择烧写文件");
 		return;
 	}
+	ProcessS19File(ui.line_fileaddress->text());
 	if (AppStack.isEmpty())
 	{
 		Display(u8"烧写文件不正确");
@@ -319,7 +319,7 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 			Display(strtemp.toStdString());
 			putdata(Data, startpos, txbuf, 64);
 			TransmitBlock((char*)txbuf, 64, blocknum);
-			Sleep(50);
+			//Sleep(50);
 			ret = Wait3D(temp, 100);
 			if (ret == 0)
 			{
@@ -348,9 +348,12 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 					return;
 				}
 			}
-			Sleep(50);
+			//Sleep(50);
 		}
 		//发送最后一个块
+		QString strtemp(u8"block ");
+		strtemp.append(QString::number(blocknum));
+		Display(strtemp.toStdString());
 		putdata(Data, startpos, txbuf, len);
 		while (1)
 		{
@@ -367,10 +370,6 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 			if (temp[0] == 0x21 && temp[1] == 0x2 && temp[2] == 0x76 && temp[3] == blocknum)
 			{
 				//传送成功
-			
-				QString strtemp(u8"block ");
-				strtemp.append(QString::number(blocknum));
-				Display(strtemp.toStdString());
 				break;
 			}
 			else
@@ -384,6 +383,8 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 			}
 		}
 	}
+
+	Display(u8"刷写完成");
 }
 
 void PLinBootloader::on_btnErgodic_clicked(void)
@@ -521,8 +522,8 @@ void PLinBootloader::FreshHW(void)
 	}
 	if (HWCount == 0)
 	{
-		ui.cbbSelectHW->clear();
-		ui.cbbSelectHW->addItem(u8"未找到硬件");
+		ui.cbbSelectChenal->clear();
+		ui.cbbSelectChenal->addItem(u8"未找到硬件");
 		Display(u8"未找到硬件");
 	}
 	else
