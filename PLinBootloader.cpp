@@ -21,6 +21,7 @@ PLinBootloader::PLinBootloader(QWidget *parent)
 		MessageBox(NULL, TEXT("加载DLL成功"), TEXT("Error!"), MB_ICONERROR);
 	}
 	*/
+	BootState = 0;
 }
 
 PLinBootloader::~PLinBootloader(void)
@@ -305,6 +306,7 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 		if (ret == 0)
 		{
 			Display(u8"超时");
+			BootState = 0;
 			return;
 		}
 		temp[0] = 0;
@@ -325,6 +327,7 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 			if (ret == 0)
 			{
 				Display(u8"超时");
+				BootState = 0;
 				return;
 			}
 			//temp[0] = 0;
@@ -337,8 +340,10 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 				if (blocknum >= 256)blocknum = 0;
 				startpos += 64;
 				len -= 64;
-				
+				position += 64;
 				errortimes = 0;
+				ui.progressBar->setValue(position * 100 / total);
+
 			}
 			else
 			{
@@ -346,6 +351,7 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 				if (errortimes >= 3)
 				{
 					Display(u8"失败");
+					BootState = 0;
 					return;
 				}
 			}
@@ -366,6 +372,7 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 			if (ret == 0)
 			{
 				Display(u8"超时");
+				BootState = 0;
 				return;
 			}
 			if (temp[0] == 0x21 && temp[1] == 0x2 && temp[2] == 0x76 && temp[3] == blocknum)
@@ -379,13 +386,19 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 				if (errortimes >= 3)
 				{
 					Display(u8"失败");
+					BootState = 0;
 					return;
 				}
 			}
 		}
 	}
-
+	ui.progressBar->setValue(100);
 	Display(u8"刷写完成");
+	QCoreApplication::processEvents();
+	BootState = 2;
+	Sleep(10);
+	on_btnDID_ReadSW_clicked();
+	Sleep(10);
 }
 
 void PLinBootloader::on_btnErgodic_clicked(void)
@@ -640,6 +653,8 @@ void PLinBootloader::ProcessS19File(QString FileAddress)
 		AppStack.clear();
 		AddressStack.clear();
 		LenStack.clear();
+		total = 0;
+		position = 0;
 
 		//输出文件信息
 		QString fileinfo = u8"文件名：";
@@ -724,6 +739,11 @@ void PLinBootloader::ProcessS19File(QString FileAddress)
 		AddressLast = Address;
 		datalenlast = datalen;
 		stacklen += datalen;
+		if (Address >= 0xff0000 && Address < 0xff8000)
+		{
+			total += datalen;
+
+		}
 		for (i = 0; i < datalen; i++)
 		{
 			temp = Qreadbuf.mid(i*2, 2);
@@ -911,19 +931,27 @@ void PLinBootloader::ProcessDiag(BYTE* buffer)
 		{
 			buffer[len+1] = '\0';
 			//Display((char *)(&buffer[4]));
-			ui.lbl_DIDSW->setText(QString::fromStdString((char*)(&buffer[4])));
-			ui.lbl_DIDSW_2->setText(QString::fromStdString((char*)(&buffer[4])));
+			if(BootState == 0)
+				ui.lbl_DIDSW->setText(QString::fromStdString((char*)(&buffer[4])));
+			else if(BootState == 1)
+				ui.lbl_DIDSW_2->setText(QString::fromStdString((char*)(&buffer[4])));
+			else if(BootState == 2)
+				ui.lbl_DIDSW_3->setText(QString::fromStdString((char*)(&buffer[4])));
 		}
 		else if (DID == 0xF192)
 		{
 			buffer[len + 1] = '\0';
-			ui.lbl_DIDHW->setText(QString::fromStdString((char*)(&buffer[4])));
-			ui.lbl_DIDHW_2->setText(QString::fromStdString((char*)(&buffer[4])));
+			if (BootState == 0)
+				ui.lbl_DIDHW->setText(QString::fromStdString((char*)(&buffer[4])));
+			else if (BootState == 1)
+				ui.lbl_DIDHW_2->setText(QString::fromStdString((char*)(&buffer[4])));
 		}
 		else if (DID == 0xF190)
 		{
 			buffer[len + 1] = '\0';
+			if (BootState == 0)
 			ui.lbl_DIDBOOT->setText(QString::fromStdString((char*)(&buffer[4])));
+			else if (BootState == 1)
 			ui.lbl_DIDBOOT_2->setText(QString::fromStdString((char*)(&buffer[4])));
 		}
 		else if (DID == 0xF110)
