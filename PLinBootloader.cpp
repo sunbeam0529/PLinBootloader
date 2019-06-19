@@ -6,28 +6,27 @@
 PLinBootloader::PLinBootloader(QWidget *parent)
 	: QMainWindow(parent)
 {
-	ui.setupUi(this);
+	ui.setupUi(this);//初始化界面
 	this->Display(u8"加载成功"); 
-	ui.btnStop->setEnabled(FALSE);
-	ui.btnStop->setEnabled(FALSE);
-	if (this->LoadDLL() == LOADDLL_ERR)
+	ui.btnStop->setEnabled(FALSE);//设置停止按钮为禁用
+	if (this->LoadDLL() == LOADDLL_ERR)//加载DLL文件
 	{
 		MessageBox(NULL, TEXT("Error: \"找不到PLinApi.dll!\""), TEXT("Error!"), MB_ICONERROR);
 	}
-	ui.progressBar->setValue(0);
+	ui.progressBar->setValue(0);//设置进度条为0
 	/*
 	else
 	{
 		MessageBox(NULL, TEXT("加载DLL成功"), TEXT("Error!"), MB_ICONERROR);
 	}
 	*/
-	BootState = 0;
+	BootState = 0;//初始化状态
 }
 
 PLinBootloader::~PLinBootloader(void)
 {
-	DoLINDisconnect();
-	FreeLibrary(m_hDll);
+	DoLINDisconnect();//断开连接
+	FreeLibrary(m_hDll);//释放DLL
 }
 
 
@@ -40,25 +39,22 @@ void PLinBootloader::Display(string s)
 
 void PLinBootloader::on_btnFresh_clicked(void)
 {
-	//this->Display(u8"加载成功");
-	FreshHW();
+	FreshHW();//刷新硬件
 }
 
 void PLinBootloader::on_btnConnect_clicked(void)
 {
-	//this->Display(u8"加载成功");
-	DoLINConnect();
+	DoLINConnect();//连接硬件
 }
 
 void PLinBootloader::on_btnStop_clicked(void)
 {
-	//this->Display(u8"加载成功");
-	DoLINDisconnect();
+	DoLINDisconnect();//断开连接
 }
 
 void PLinBootloader::on_btnClear_clicked(void)
 {
-	ui.textBrowser->clear();
+	ui.textBrowser->clear();//清空
 }
 
 void PLinBootloader::on_btnDID_ReadSW_clicked(void)
@@ -73,12 +69,12 @@ void PLinBootloader::on_btnDID_ReadSW_clicked(void)
 	{
 		Display(u8"读取软件版本号");
 	}
-	TransmitID(0);
+	TransmitID(0);//唤醒
 	Sleep(10);
-	Write3C(temp);
+	Write3C(temp);//发送诊断请求
 	Sleep(10);
 	ReadMsg();
-	Read3D();
+	Read3D();//读取数据
 }
 
 void PLinBootloader::on_btnDID_ReadHW_clicked(void)
@@ -93,12 +89,12 @@ void PLinBootloader::on_btnDID_ReadHW_clicked(void)
 	{
 		Display(u8"读取硬件版本号");
 	}
-	TransmitID(0);
+	TransmitID(0);//唤醒
 	Sleep(10);
-	Write3C(temp);
+	Write3C(temp);//发送诊断请求
 	Sleep(10);
 	ReadMsg();
-	Read3D();
+	Read3D();//读取数据
 }
 
 void PLinBootloader::on_btnDID_ReadBoot_clicked(void)
@@ -113,12 +109,12 @@ void PLinBootloader::on_btnDID_ReadBoot_clicked(void)
 	{
 		Display(u8"读取Bootloader版本号");
 	}
-	TransmitID(0);
+	TransmitID(0);//唤醒
 	Sleep(10);
-	Write3C(temp);
+	Write3C(temp);//发送诊断请求
 	Sleep(10);
 	ReadMsg();
-	Read3D();
+	Read3D();//读取数据
 }
 
 void PLinBootloader::on_btnDID_ReadPartnum_clicked(void)
@@ -133,12 +129,12 @@ void PLinBootloader::on_btnDID_ReadPartnum_clicked(void)
 	{
 		Display(u8"读取零件号");
 	}
-	TransmitID(0);
+	TransmitID(0);//唤醒
 	Sleep(10);
-	Write3C(temp);
+	Write3C(temp);//发送诊断请求
 	Sleep(10);
 	ReadMsg();
-	Read3D();
+	Read3D();//读取数据
 }
 
 void PLinBootloader::on_btnDID_ReadModel_clicked(void)
@@ -153,11 +149,12 @@ void PLinBootloader::on_btnDID_ReadModel_clicked(void)
 	{
 		Display(u8"读取型号");
 	}
-	TransmitID(0);
+	TransmitID(0);//唤醒
 	Sleep(10);
-	Write3C(temp);
+	Write3C(temp);//发送诊断请求
 	Sleep(10);
-	Read3D();
+	ReadMsg();
+	Read3D();//读取数据
 }
 
 void PLinBootloader::on_btn_AppMode_clicked(void)
@@ -172,13 +169,12 @@ void PLinBootloader::on_btn_AppMode_clicked(void)
 	{
 		Display(u8"进入APP");
 	}
-	TransmitID(0);
+	TransmitID(0);//唤醒
 	Sleep(10);
-	Write3C(temp);
+	Write3C(temp);//发送诊断请求
 	Sleep(10);
 	ReadMsg();
-	Sleep(10);
-	Read3D();
+	Read3D();//读取数据
 }
 
 void PLinBootloader::on_btn_BootMode_clicked(void)
@@ -193,13 +189,12 @@ void PLinBootloader::on_btn_BootMode_clicked(void)
 	{
 		Display(u8"进入BOOT");
 	}
-	TransmitID(0);
+	TransmitID(0);//唤醒
 	Sleep(10);
-	Write3C(temp);
+	Write3C(temp);//发送诊断请求
 	Sleep(10);
 	ReadMsg();
-	Sleep(10);
-	Read3D();
+	Read3D();//读取数据
 }
 
 void PLinBootloader::on_bnt_Unlock_clicked(void)
@@ -215,30 +210,37 @@ void PLinBootloader::on_bnt_Unlock_clicked(void)
 	{
 		Display(u8"安全访问解锁");
 	}
-	TransmitID(0);
+	TransmitID(0);//唤醒
 	Sleep(10);
-	Write3C(temp);
+	Write3C(temp);//发送诊断请求
 	Sleep(10);
-	Transmit3DHead();
+	Transmit3DHead();//发送帧头
 	Sleep(10);
 	temp[0] = 0;
-	ReadMsg(temp);
+	ReadMsg(temp);//读取数据
 
-	if (temp[0] == 0x21 && temp[1] == 0x4 && temp[2] == 0x67)
+	if (temp[0] == 0x21 && temp[1] == 0x4 && temp[2] == 0x67)//正响应
 	{
+		//读取种子
 		seed = temp[4];
 		seed <<= 8;
 		seed |= temp[5];
+
+		//计算秘钥
 		seed = ~seed + 0x2019;
+
+		//发送秘钥
 		temp[2] = 0x27;
 		temp[3] = 0x02;
 		temp[4] = seed>>8;
 		temp[5] = seed & 0xff;
 		Write3C(temp);
 		Sleep(10);
-		Transmit3DHead();
+
+		//读取响应
+		Transmit3DHead();//帧头
 		Sleep(10);
-		ReadMsg(temp);
+		ReadMsg(temp);//读取数据
 		if (temp[0] == 0x21 && temp[1] == 0x2 && temp[2] == 0x67 && temp[3] == 0x02)
 			Display(u8"解锁成功");
 	}
@@ -248,10 +250,11 @@ void PLinBootloader::on_bnt_Unlock_clicked(void)
 
 void PLinBootloader::on_btnSelectAppFile_clicked(void)
 {
+	//打开文件
 	QString File = QFileDialog::getOpenFileName(NULL, u8"打开", ".", "S19 Files (*.sx;*.s19);;All Files (*.*)");
-	ui.line_fileaddress->clear();
-	ui.line_fileaddress->setText(File);
-	ProcessS19File(File);
+	ui.line_fileaddress->clear();//清空
+	ui.line_fileaddress->setText(File);//填入路径
+	ProcessS19File(File);//解析S19文件
 }
 
 
@@ -264,32 +267,32 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 		Display(u8"请选择烧写文件");
 		return;
 	}
-	ProcessS19File(ui.line_fileaddress->text());
+	ProcessS19File(ui.line_fileaddress->text());//重新读取文件
 	if (AppStack.isEmpty())
 	{
 		Display(u8"烧写文件不正确");
 		return;
 	}
 	BootState = 1;
-	on_btnDID_ReadSW_clicked();
+	on_btnDID_ReadSW_clicked();//软件版本
 	Sleep(10);
-	on_btnDID_ReadHW_clicked();
+	on_btnDID_ReadHW_clicked();//硬件版本
 	Sleep(10);
-	on_btnDID_ReadBoot_clicked();
+	on_btnDID_ReadBoot_clicked();//BOOT版本
 	Sleep(50);
-	on_btn_BootMode_clicked();
+	on_btn_BootMode_clicked();//进入boot
 	Sleep(500);
-	on_btn_BootMode_clicked();
+	on_btn_BootMode_clicked();//确认进入
 	Sleep(10);
-	on_bnt_Unlock_clicked();
+	on_bnt_Unlock_clicked();//解锁
 	Sleep(10);
 	while (!AppStack.isEmpty())
 	{
 		INT32 address;
 		int len,startpos=0,ret;
-		QByteArray Data = *(AppStack.dequeue());
-		address = AddressStack.dequeue();
-		len = LenStack.dequeue();
+		QByteArray Data = *(AppStack.dequeue());//读取一部分数据
+		address = AddressStack.dequeue();//读取地址
+		len = LenStack.dequeue();//长度
 		if (address > 0xff8000 || address < 0xff0000)
 		{
 			//地址错误
@@ -302,27 +305,32 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 		Sleep(10);
 		Write3C(temp2);
 		Sleep(100);
-		ret = Wait3D(temp, 100);
-		if (ret == 0)
+
+		ret = Wait3D(temp, 100);//等待响应
+		if (ret == 0)//超时退出
 		{
 			Display(u8"超时");
 			BootState = 0;
 			return;
 		}
+
+		//初始化临时变量
 		temp[0] = 0;
-		//ReadMsg(temp);
-		//Sleep(10);
 		int blocknum=1,frameid=0x21;
 		BYTE txbuf[64];
 		
-		while (len > 64)
+		while (len > 64)//每次读取64个字节数据，直到完成
 		{
+			//显示当前块
 			QString strtemp(u8"block ");
 			strtemp.append(QString::number(blocknum));
 			Display(strtemp.toStdString());
-			putdata(Data, startpos, txbuf, 64);
-			TransmitBlock((char*)txbuf, 64, blocknum);
-			//Sleep(50);
+
+			//发送64字节数据
+			putdata(Data, startpos, txbuf, 64);//转移数据
+			TransmitBlock((char*)txbuf, 64, blocknum);//发送
+			
+			//等待响应
 			ret = Wait3D(temp, 100);
 			if (ret == 0)
 			{
@@ -330,25 +338,26 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 				BootState = 0;
 				return;
 			}
-			//temp[0] = 0;
-			//ReadMsg(temp);
+			
+			//刷新GUI
 			QCoreApplication::processEvents();
+
+			//判断响应
 			if (temp[0] == 0x21 && temp[1] == 0x2 && temp[2] == 0x76 && temp[3] == blocknum)
 			{
-				//传送成功
+				//传送成功，相应变量增加
 				blocknum++;
 				if (blocknum >= 256)blocknum = 0;
 				startpos += 64;
 				len -= 64;
 				position += 64;
 				errortimes = 0;
-				ui.progressBar->setValue(position * 100 / total);
-
+				ui.progressBar->setValue(position * 100 / total);//更新进度条
 			}
 			else
 			{
 				errortimes++;
-				if (errortimes >= 3)
+				if (errortimes >= 3)//错误超过3次，退出
 				{
 					Display(u8"失败");
 					BootState = 0;
@@ -360,8 +369,8 @@ void PLinBootloader::on_btnOneKeyBoot_clicked(void)
 		//发送最后一个块
 		QString strtemp(u8"block ");
 		strtemp.append(QString::number(blocknum));
-		Display(strtemp.toStdString());
-		putdata(Data, startpos, txbuf, len);
+		Display(strtemp.toStdString());//显示块序列
+		putdata(Data, startpos, txbuf, len);//转移数据
 		while (1)
 		{
 			TransmitBlock((char*)txbuf, len, blocknum);
@@ -642,6 +651,7 @@ void PLinBootloader::ProcessS19File(QString FileAddress)
 	QFileInfo info(FileAddress);
 	if (!info.exists())
 	{
+		AppStack.clear();
 		return;
 	}
 	else
