@@ -13,6 +13,7 @@ PLinBootloader::PLinBootloader(QWidget *parent)
 	{
 		MessageBox(NULL, TEXT("Error: \"找不到PLinApi.dll!\""), TEXT("Error!"), MB_ICONERROR);
 	}
+	LoadDLL_spy3();
 	ui.progressBar->setValue(0);//设置进度条为0
 	/*
 	else
@@ -521,6 +522,95 @@ int PLinBootloader::LoadDLL(void)
 	}
 	return LOADDLL_OK;
 
+}
+
+int PLinBootloader::LoadDLL_spy3(void)
+{
+	m_hDll_spy3 = LoadLibrary(TEXT("icsneo40.dll"));
+	if (m_hDll_spy3 != NULL)
+	{
+		Display(u8"加载icsneo40.dll成功");
+	}
+	else
+	{
+		Display(u8"加载icsneo40.dll失败");
+		return 0;
+	}
+	//icsneoFindNeoDevices = (FINDNEODEVICES)GetProcAddress(m_hDll_spy3, "icsneoFindNeoDevices");
+
+	icsneoFindNeoDevices = (FINDNEODEVICES)GetProcAddress(m_hDll_spy3, "icsneoFindNeoDevices");
+	icsneoOpenNeoDevice = (OPENNEODEVICE)GetProcAddress(m_hDll_spy3, "icsneoOpenNeoDevice");
+	icsneoClosePort = (CLOSEPORT)GetProcAddress(m_hDll_spy3, "icsneoClosePort");
+	icsneoFreeObject = (FREEOBJECT)GetProcAddress(m_hDll_spy3, "icsneoFreeObject");
+	icsneoOpenPortEx = (OPENPORTEX)GetProcAddress(m_hDll_spy3, "icsneoOpenPortEx");
+	icsneoEnableNetworkCom = (ENABLENETWORKCOM)GetProcAddress(m_hDll_spy3, "icsneoEnableNetworkCom");
+	icsneoGetDLLVersion = (GETDLLVERSION)GetProcAddress(m_hDll_spy3, "icsneoGetDLLVersion");
+	icsneoTxMessages = (TXMESSAGES)GetProcAddress(m_hDll_spy3, "icsneoTxMessages");
+	icsneoGetMessages = (GETMESSAGES)GetProcAddress(m_hDll_spy3, "icsneoGetMessages");
+	icsneoWaitForRxMessagesWithTimeOut = (WAITFORRXMSGS)GetProcAddress(m_hDll_spy3, "icsneoWaitForRxMessagesWithTimeOut");
+	icsneoGetTimeStampForMsg = (GETTSFORMSG)GetProcAddress(m_hDll_spy3, "icsneoGetTimeStampForMsg");
+	icsneoEnableNetworkRXQueue = (ENABLERXQUEUE)GetProcAddress(m_hDll_spy3, "icsneoEnableNetworkRXQueue");
+	icsneoGetISO15765Status = (GETISO15765STATUS)GetProcAddress(m_hDll_spy3, "icsneoGetISO15765Status");
+	icsneoSetISO15765RxParameters = (SETISO15765RXPARMS)GetProcAddress(m_hDll_spy3, "icsneoSetISO15765RxParameters");
+	icsneoDownloadISO15765_2_TXScript = (DOWNLOADISO15765_2_TXSCRIPT)GetProcAddress(m_hDll_spy3, "icsneoDownloadISO15765_2_TXScript");
+	icsneoClearISO15765_2_TxScript = (CLEARISO15765_2_TXSCRIPT)GetProcAddress(m_hDll_spy3, "icsneoClearISO15765_2_TxScript");
+
+
+	icsneoGetConfiguration = (GETCONFIG)GetProcAddress(m_hDll_spy3, "icsneoGetConfiguration");
+	icsneoSendConfiguration = (SENDCONFIG)GetProcAddress(m_hDll_spy3, "icsneoSendConfiguration");
+	icsneoGetFireSettings = (GETFIRESETTINGS)GetProcAddress(m_hDll_spy3, "icsneoGetFireSettings");
+	icsneoSetFireSettings = (SETFIRESETTINGS)GetProcAddress(m_hDll_spy3, "icsneoSetFireSettings");
+	icsneoGetVCAN3Settings = (GETVCAN3SETTINGS)GetProcAddress(m_hDll_spy3, "icsneoGetVCAN3Settings");
+	icsneoSetVCAN3Settings = (SETVCAN3SETTINGS)GetProcAddress(m_hDll_spy3, "icsneoSetVCAN3Settings");
+	icsneoSetBitRate = (SETBITRATE)GetProcAddress(m_hDll_spy3, "icsneoSetBitRate");
+	icsneoGetDeviceParameters = (GETDEVICEPARMS)GetProcAddress(m_hDll_spy3, "icsneoGetDeviceParameters");
+	icsneoSetDeviceParameters = (SETDEVICEPARMS)GetProcAddress(m_hDll_spy3, "icsneoSetDeviceParameters");
+
+	icsneoGetLastAPIError = (GETLASTAPIERROR)GetProcAddress(m_hDll_spy3, "icsneoGetLastAPIError");
+	icsneoGetErrorMessages = (GETERRMSGS)GetProcAddress(m_hDll_spy3, "icsneoGetErrorMessages");
+	icsneoGetErrorInfo = (GETERRORINFO)GetProcAddress(m_hDll_spy3, "icsneoGetErrorInfo");
+
+	icsneoScriptLoad = (SCRIPTLOAD)GetProcAddress(m_hDll_spy3, "icsneoScriptLoad");
+	icsneoScriptStart = (SCRIPTSTART)GetProcAddress(m_hDll_spy3, "icsneoScriptStart");
+	icsneoScriptStop = (SCRIPTSTOP)GetProcAddress(m_hDll_spy3, "icsneoScriptStop");
+	icsneoScriptClear = (SCRIPTCLEAR)GetProcAddress(m_hDll_spy3, "icsneoScriptClear");
+	icsneoScriptStartFBlock = (SCRIPTSTARTFBLOCK)GetProcAddress(m_hDll_spy3, "icsneoScriptStartFBlock");
+	icsneoScriptStopFBlock = (SCRIPTSTOPFBLOCK)GetProcAddress(m_hDll_spy3, "icsneoScriptStopFBlock");
+	icsneoScriptGetFBlockStatus = (SCRIPTGETFBLOCKSTATUS)GetProcAddress(m_hDll_spy3, "icsneoScriptGetFBlockStatus");
+	icsneoScriptGetScriptStatus = (SCRIPTGETSCRIPTSTATUS)GetProcAddress(m_hDll_spy3, "icsneoScriptGetScriptStatus");
+	icsneoScriptReadAppSignal = (SCRIPTREADAPPSIGNAL)GetProcAddress(m_hDll_spy3, "icsneoScriptReadAppSignal");
+	icsneoScriptWriteAppSignal = (SCRIPTWRITEAPPSIGNAL)GetProcAddress(m_hDll_spy3, "icsneoScriptWriteAppSignal");
+
+	icsneoScriptReadRxMessage = (SCRIPTREADRXMESSAGE)GetProcAddress(m_hDll_spy3, "icsneoScriptReadRxMessage");
+	icsneoScriptReadTxMessage = (SCRIPTREADTXMESSAGE)GetProcAddress(m_hDll_spy3, "icsneoScriptReadTxMessage");
+	icsneoScriptWriteRxMessage = (SCRIPTWRITERXMESSAGE)GetProcAddress(m_hDll_spy3, "icsneoScriptWriteRxMessage");
+	icsneoScriptWriteTxMessage = (SCRIPTWRITETXMESSAGE)GetProcAddress(m_hDll_spy3, "icsneoScriptWriteTxMessage");
+
+
+
+	if (!icsneoFindNeoDevices || !icsneoOpenNeoDevice || !icsneoClosePort || !icsneoFreeObject || !icsneoOpenPortEx ||
+		!icsneoEnableNetworkCom || !icsneoTxMessages || !icsneoGetMessages || !icsneoWaitForRxMessagesWithTimeOut ||
+		!icsneoGetTimeStampForMsg || !icsneoEnableNetworkRXQueue || !icsneoGetISO15765Status ||
+		!icsneoSetISO15765RxParameters || !icsneoGetConfiguration || !icsneoSendConfiguration ||
+		!icsneoGetFireSettings || !icsneoSetFireSettings || !icsneoGetVCAN3Settings ||
+		!icsneoSetVCAN3Settings || !icsneoSetBitRate || !icsneoGetDeviceParameters ||
+		!icsneoSetDeviceParameters || !icsneoGetLastAPIError || !icsneoGetErrorMessages ||
+		!icsneoGetErrorInfo || !icsneoScriptLoad || !icsneoScriptStart || !icsneoScriptStop ||
+		!icsneoScriptClear || !icsneoScriptStartFBlock || !icsneoScriptStopFBlock ||
+		!icsneoScriptGetFBlockStatus || !icsneoScriptGetScriptStatus || !icsneoScriptReadAppSignal ||
+		!icsneoScriptWriteAppSignal || !icsneoScriptReadRxMessage || !icsneoScriptReadTxMessage ||
+		!icsneoScriptWriteRxMessage || !icsneoScriptWriteTxMessage ||
+		!icsneoGetDLLVersion || !icsneoDownloadISO15765_2_TXScript ||
+		!icsneoClearISO15765_2_TxScript)
+	{
+		FreeLibrary(m_hDll_spy3);
+		Display(u8"加载SPY3_API失败");
+		return 0;
+	}
+	Display(u8"加载SPY3_API成功");
+
+
+	return 1;
 }
 
 void PLinBootloader::FreshHW(void)

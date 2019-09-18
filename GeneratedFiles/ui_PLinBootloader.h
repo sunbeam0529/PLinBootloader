@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'PLinBootloader.ui'
 **
-** Created by: Qt User Interface Compiler version 5.12.1
+** Created by: Qt User Interface Compiler version 5.13.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -435,51 +435,51 @@ public:
 
     void retranslateUi(QMainWindow *PLinBootloaderClass)
     {
-        PLinBootloaderClass->setWindowTitle(QApplication::translate("PLinBootloaderClass", "PLinBootloader", nullptr));
-        label->setText(QApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266", nullptr));
-        cbbSelectHW->setItemText(0, QApplication::translate("PLinBootloaderClass", "PEAK-PLIN", nullptr));
+        PLinBootloaderClass->setWindowTitle(QCoreApplication::translate("PLinBootloaderClass", "PLinBootloader", nullptr));
+        label->setText(QCoreApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266", nullptr));
+        cbbSelectHW->setItemText(0, QCoreApplication::translate("PLinBootloaderClass", "PEAK-PLIN", nullptr));
 
-        btnFresh->setText(QApplication::translate("PLinBootloaderClass", "\345\210\267\346\226\260", nullptr));
-        label_2->setText(QApplication::translate("PLinBootloaderClass", "\351\200\232\351\201\223", nullptr));
-        label_3->setText(QApplication::translate("PLinBootloaderClass", "\346\263\242\347\211\271\347\216\207", nullptr));
-        cbbSelectBaudrate->setItemText(0, QApplication::translate("PLinBootloaderClass", "19200", nullptr));
+        btnFresh->setText(QCoreApplication::translate("PLinBootloaderClass", "\345\210\267\346\226\260", nullptr));
+        label_2->setText(QCoreApplication::translate("PLinBootloaderClass", "\351\200\232\351\201\223", nullptr));
+        label_3->setText(QCoreApplication::translate("PLinBootloaderClass", "\346\263\242\347\211\271\347\216\207", nullptr));
+        cbbSelectBaudrate->setItemText(0, QCoreApplication::translate("PLinBootloaderClass", "19200", nullptr));
 
-        btnConnect->setText(QApplication::translate("PLinBootloaderClass", "\350\277\236\346\216\245", nullptr));
-        btnStop->setText(QApplication::translate("PLinBootloaderClass", "\345\201\234\346\255\242", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266", nullptr));
-        btn_BootMode->setText(QApplication::translate("PLinBootloaderClass", "BootMode", nullptr));
-        btn_AppMode->setText(QApplication::translate("PLinBootloaderClass", "AppMode", nullptr));
-        bnt_Unlock->setText(QApplication::translate("PLinBootloaderClass", "\350\247\243\351\224\201", nullptr));
-        btnDID_ReadSW->setText(QApplication::translate("PLinBootloaderClass", "\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
-        btnDID_ReadBoot->setText(QApplication::translate("PLinBootloaderClass", "Boot\347\211\210\346\234\254\345\217\267", nullptr));
-        btnDID_ReadHW->setText(QApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
+        btnConnect->setText(QCoreApplication::translate("PLinBootloaderClass", "\350\277\236\346\216\245", nullptr));
+        btnStop->setText(QCoreApplication::translate("PLinBootloaderClass", "\345\201\234\346\255\242", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266", nullptr));
+        btn_BootMode->setText(QCoreApplication::translate("PLinBootloaderClass", "BootMode", nullptr));
+        btn_AppMode->setText(QCoreApplication::translate("PLinBootloaderClass", "AppMode", nullptr));
+        bnt_Unlock->setText(QCoreApplication::translate("PLinBootloaderClass", "\350\247\243\351\224\201", nullptr));
+        btnDID_ReadSW->setText(QCoreApplication::translate("PLinBootloaderClass", "\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
+        btnDID_ReadBoot->setText(QCoreApplication::translate("PLinBootloaderClass", "Boot\347\211\210\346\234\254\345\217\267", nullptr));
+        btnDID_ReadHW->setText(QCoreApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
         lbl_DIDHW->setText(QString());
         lbl_DIDPART->setText(QString());
         lbl_DIDSW->setText(QString());
         lbl_DIDBOOT->setText(QString());
-        btnDID_ReadModel->setText(QApplication::translate("PLinBootloaderClass", "\345\236\213\345\217\267", nullptr));
-        btnDID_ReadPartnum->setText(QApplication::translate("PLinBootloaderClass", "\345\256\242\346\210\267\344\273\266\345\217\267", nullptr));
+        btnDID_ReadModel->setText(QCoreApplication::translate("PLinBootloaderClass", "\345\236\213\345\217\267", nullptr));
+        btnDID_ReadPartnum->setText(QCoreApplication::translate("PLinBootloaderClass", "\345\256\242\346\210\267\344\273\266\345\217\267", nullptr));
         lbl_DIDMODEL->setText(QString());
-        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("PLinBootloaderClass", "\350\257\212\346\226\255", nullptr));
-        lbl_lable_5->setText(QApplication::translate("PLinBootloaderClass", "\351\200\211\346\213\251app\346\226\207\344\273\266", nullptr));
-        btnSelectAppFile->setText(QApplication::translate("PLinBootloaderClass", "...", nullptr));
-        btnOneKeyBoot->setText(QApplication::translate("PLinBootloaderClass", "\344\270\200\351\224\256bootloader", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("PLinBootloaderClass", "\350\257\212\346\226\255", nullptr));
+        lbl_lable_5->setText(QCoreApplication::translate("PLinBootloaderClass", "\351\200\211\346\213\251app\346\226\207\344\273\266", nullptr));
+        btnSelectAppFile->setText(QCoreApplication::translate("PLinBootloaderClass", "...", nullptr));
+        btnOneKeyBoot->setText(QCoreApplication::translate("PLinBootloaderClass", "\344\270\200\351\224\256bootloader", nullptr));
         lbl_DIDSW_2->setText(QString());
         lbl_DIDBOOT_2->setText(QString());
-        lbl_lable_3->setText(QApplication::translate("PLinBootloaderClass", "boot\347\211\210\346\234\254\345\217\267", nullptr));
-        lbl_lable_2->setText(QApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
+        lbl_lable_3->setText(QCoreApplication::translate("PLinBootloaderClass", "boot\347\211\210\346\234\254\345\217\267", nullptr));
+        lbl_lable_2->setText(QCoreApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
         lbl_DIDHW_2->setText(QString());
-        lbl_lable_4->setText(QApplication::translate("PLinBootloaderClass", "\346\233\264\346\226\260\345\220\216\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
-        lbl_lable_1->setText(QApplication::translate("PLinBootloaderClass", "\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
+        lbl_lable_4->setText(QCoreApplication::translate("PLinBootloaderClass", "\346\233\264\346\226\260\345\220\216\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
+        lbl_lable_1->setText(QCoreApplication::translate("PLinBootloaderClass", "\350\275\257\344\273\266\347\211\210\346\234\254\345\217\267", nullptr));
         lbl_DIDSW_3->setText(QString());
-        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("PLinBootloaderClass", "bootloader", nullptr));
-        label_6->setText(QApplication::translate("PLinBootloaderClass", "\351\201\215\345\216\206", nullptr));
-        label_4->setText(QApplication::translate("PLinBootloaderClass", "\344\273\216", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_3), QCoreApplication::translate("PLinBootloaderClass", "bootloader", nullptr));
+        label_6->setText(QCoreApplication::translate("PLinBootloaderClass", "\351\201\215\345\216\206", nullptr));
+        label_4->setText(QCoreApplication::translate("PLinBootloaderClass", "\344\273\216", nullptr));
         lineID1->setText(QString());
-        label_5->setText(QApplication::translate("PLinBootloaderClass", "\345\210\260", nullptr));
-        btnErgodic->setText(QApplication::translate("PLinBootloaderClass", "\351\201\215\345\216\206", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab_4), QApplication::translate("PLinBootloaderClass", "\346\265\213\350\257\225", nullptr));
-        btnClear->setText(QApplication::translate("PLinBootloaderClass", "\346\270\205\347\251\272", nullptr));
+        label_5->setText(QCoreApplication::translate("PLinBootloaderClass", "\345\210\260", nullptr));
+        btnErgodic->setText(QCoreApplication::translate("PLinBootloaderClass", "\351\201\215\345\216\206", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_4), QCoreApplication::translate("PLinBootloaderClass", "\346\265\213\350\257\225", nullptr));
+        btnClear->setText(QCoreApplication::translate("PLinBootloaderClass", "\346\270\205\347\251\272", nullptr));
     } // retranslateUi
 
 };
