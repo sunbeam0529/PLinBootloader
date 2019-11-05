@@ -150,6 +150,8 @@ public:
 	PLinBootloader(QWidget *parent = Q_NULLPTR);
 	~PLinBootloader(void);
 
+	
+
 private slots:
 	void on_btnFresh_clicked(void);
 	void on_btnConnect_clicked(void);
@@ -165,24 +167,32 @@ private slots:
 	void on_bnt_Unlock_clicked(void);
 	void on_btnSelectAppFile_clicked(void);
 	void on_btnOneKeyBoot_clicked(void);
-
+	void on_btnReadData_clicked(void);
+	void on_btnReadDataStop_clicked(void);
+	void on_btnReadPara_clicked(void);
 	void on_btnErgodic_clicked(void);
-
+	void onTimeOut00(void);
 	
 
 private:
 	HINSTANCE m_hDll = NULL;
 	HINSTANCE m_hDll_spy3 = NULL;
 	HLINCLIENT m_hClient = NULL;
+	NeoDevice * m_hspy3_Client = NULL;
 	HLINHW m_hHW;
 	AVAILABLE_HW* AvailableHW;
 	int m_bWasLoaded;
 	QQueue<QByteArray *> AppStack;
 	QQueue<INT32> AddressStack;
 	QQueue<int> LenStack;
+	QTimer* timer;
 	int total, position;
 	char BootState;
+	QCustomPlot* customPlot;
+	int datatime;
 	Ui::PLinBootloaderClass ui;
+	QVector<double> x, y0, y1;
+	QList<double>baselinedata, rawdata;
 
 	fpRemoveClient			m_pRemoveClient;
 	fpResetClient			m_pResetClient;
@@ -292,7 +302,7 @@ private:
 	
 
 	void Display(string s);
-	
+
 	int LoadDLL(void);
 
 	int LoadDLL_spy3(void);

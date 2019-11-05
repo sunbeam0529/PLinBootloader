@@ -20,9 +20,11 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTextBrowser>
 #include <QtWidgets/QWidget>
+#include "qcustomplot.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -84,8 +86,31 @@ public:
     QLabel *label_5;
     QLineEdit *lineID2;
     QPushButton *btnErgodic;
+    QWidget *tab_5;
+    QLabel *label_7;
+    QPushButton *btnReadData;
+    QSpinBox *spinBox;
+    QPushButton *btnReadPara;
+    QWidget *layoutWidget4;
+    QGridLayout *gridLayout_4;
+    QLabel *label_8;
+    QComboBox *cnnFrequency;
+    QLabel *label_9;
+    QSpinBox *spnResolution;
+    QLabel *label_10;
+    QSpinBox *spnMIDAC;
+    QLabel *label_11;
+    QSpinBox *spnCIDAC;
+    QLabel *label_12;
+    QSpinBox *spnFingerTH;
+    QLabel *label_13;
+    QSpinBox *spnNoiseTH;
+    QLabel *label_14;
+    QSpinBox *spnHysteresis;
+    QPushButton *btnReadDataStop;
     QTextBrowser *textBrowser;
     QPushButton *btnClear;
+    QCustomPlot *widget;
 
     void setupUi(QMainWindow *PLinBootloaderClass)
     {
@@ -107,7 +132,7 @@ public:
         tabWidget = new QTabWidget(centralWidget);
         tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
         tabWidget->setEnabled(true);
-        tabWidget->setGeometry(QRect(10, 10, 361, 331));
+        tabWidget->setGeometry(QRect(10, 20, 361, 311));
         tabWidget->setTabBarAutoHide(false);
         tab = new QWidget();
         tab->setObjectName(QString::fromUtf8("tab"));
@@ -136,6 +161,7 @@ public:
         gridLayout->addWidget(label, 0, 0, 1, 1);
 
         cbbSelectHW = new QComboBox(layoutWidget);
+        cbbSelectHW->addItem(QString());
         cbbSelectHW->addItem(QString());
         cbbSelectHW->setObjectName(QString::fromUtf8("cbbSelectHW"));
 
@@ -417,17 +443,132 @@ public:
         horizontalLayout->addWidget(btnErgodic);
 
         tabWidget->addTab(tab_4, QString());
+        tab_5 = new QWidget();
+        tab_5->setObjectName(QString::fromUtf8("tab_5"));
+        label_7 = new QLabel(tab_5);
+        label_7->setObjectName(QString::fromUtf8("label_7"));
+        label_7->setGeometry(QRect(10, 20, 71, 21));
+        btnReadData = new QPushButton(tab_5);
+        btnReadData->setObjectName(QString::fromUtf8("btnReadData"));
+        btnReadData->setGeometry(QRect(180, 20, 75, 23));
+        spinBox = new QSpinBox(tab_5);
+        spinBox->setObjectName(QString::fromUtf8("spinBox"));
+        spinBox->setGeometry(QRect(90, 20, 71, 21));
+        btnReadPara = new QPushButton(tab_5);
+        btnReadPara->setObjectName(QString::fromUtf8("btnReadPara"));
+        btnReadPara->setGeometry(QRect(180, 50, 75, 23));
+        layoutWidget4 = new QWidget(tab_5);
+        layoutWidget4->setObjectName(QString::fromUtf8("layoutWidget4"));
+        layoutWidget4->setGeometry(QRect(10, 90, 211, 178));
+        gridLayout_4 = new QGridLayout(layoutWidget4);
+        gridLayout_4->setSpacing(6);
+        gridLayout_4->setContentsMargins(11, 11, 11, 11);
+        gridLayout_4->setObjectName(QString::fromUtf8("gridLayout_4"));
+        gridLayout_4->setContentsMargins(0, 0, 0, 0);
+        label_8 = new QLabel(layoutWidget4);
+        label_8->setObjectName(QString::fromUtf8("label_8"));
+
+        gridLayout_4->addWidget(label_8, 0, 0, 1, 1);
+
+        cnnFrequency = new QComboBox(layoutWidget4);
+        cnnFrequency->addItem(QString());
+        cnnFrequency->addItem(QString());
+        cnnFrequency->addItem(QString());
+        cnnFrequency->addItem(QString());
+        cnnFrequency->addItem(QString());
+        cnnFrequency->addItem(QString());
+        cnnFrequency->addItem(QString());
+        cnnFrequency->addItem(QString());
+        cnnFrequency->setObjectName(QString::fromUtf8("cnnFrequency"));
+
+        gridLayout_4->addWidget(cnnFrequency, 0, 1, 1, 1);
+
+        label_9 = new QLabel(layoutWidget4);
+        label_9->setObjectName(QString::fromUtf8("label_9"));
+
+        gridLayout_4->addWidget(label_9, 1, 0, 1, 1);
+
+        spnResolution = new QSpinBox(layoutWidget4);
+        spnResolution->setObjectName(QString::fromUtf8("spnResolution"));
+        spnResolution->setMinimum(6);
+        spnResolution->setMaximum(12);
+
+        gridLayout_4->addWidget(spnResolution, 1, 1, 1, 1);
+
+        label_10 = new QLabel(layoutWidget4);
+        label_10->setObjectName(QString::fromUtf8("label_10"));
+
+        gridLayout_4->addWidget(label_10, 2, 0, 1, 1);
+
+        spnMIDAC = new QSpinBox(layoutWidget4);
+        spnMIDAC->setObjectName(QString::fromUtf8("spnMIDAC"));
+        spnMIDAC->setMaximum(255);
+
+        gridLayout_4->addWidget(spnMIDAC, 2, 1, 1, 1);
+
+        label_11 = new QLabel(layoutWidget4);
+        label_11->setObjectName(QString::fromUtf8("label_11"));
+
+        gridLayout_4->addWidget(label_11, 3, 0, 1, 1);
+
+        spnCIDAC = new QSpinBox(layoutWidget4);
+        spnCIDAC->setObjectName(QString::fromUtf8("spnCIDAC"));
+        spnCIDAC->setMaximum(255);
+
+        gridLayout_4->addWidget(spnCIDAC, 3, 1, 1, 1);
+
+        label_12 = new QLabel(layoutWidget4);
+        label_12->setObjectName(QString::fromUtf8("label_12"));
+
+        gridLayout_4->addWidget(label_12, 4, 0, 1, 1);
+
+        spnFingerTH = new QSpinBox(layoutWidget4);
+        spnFingerTH->setObjectName(QString::fromUtf8("spnFingerTH"));
+
+        gridLayout_4->addWidget(spnFingerTH, 4, 1, 1, 1);
+
+        label_13 = new QLabel(layoutWidget4);
+        label_13->setObjectName(QString::fromUtf8("label_13"));
+
+        gridLayout_4->addWidget(label_13, 5, 0, 1, 1);
+
+        spnNoiseTH = new QSpinBox(layoutWidget4);
+        spnNoiseTH->setObjectName(QString::fromUtf8("spnNoiseTH"));
+        spnNoiseTH->setMaximum(99);
+
+        gridLayout_4->addWidget(spnNoiseTH, 5, 1, 1, 1);
+
+        label_14 = new QLabel(layoutWidget4);
+        label_14->setObjectName(QString::fromUtf8("label_14"));
+
+        gridLayout_4->addWidget(label_14, 6, 0, 1, 1);
+
+        spnHysteresis = new QSpinBox(layoutWidget4);
+        spnHysteresis->setObjectName(QString::fromUtf8("spnHysteresis"));
+
+        gridLayout_4->addWidget(spnHysteresis, 6, 1, 1, 1);
+
+        gridLayout_4->setColumnStretch(0, 1);
+        gridLayout_4->setColumnStretch(1, 2);
+        btnReadDataStop = new QPushButton(tab_5);
+        btnReadDataStop->setObjectName(QString::fromUtf8("btnReadDataStop"));
+        btnReadDataStop->setGeometry(QRect(260, 20, 75, 23));
+        tabWidget->addTab(tab_5, QString());
         textBrowser = new QTextBrowser(centralWidget);
         textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
-        textBrowser->setGeometry(QRect(380, 30, 361, 291));
+        textBrowser->setGeometry(QRect(380, 30, 361, 281));
         btnClear = new QPushButton(centralWidget);
         btnClear->setObjectName(QString::fromUtf8("btnClear"));
         btnClear->setGeometry(QRect(660, 320, 75, 23));
+        widget = new QCustomPlot(centralWidget);
+        widget->setObjectName(QString::fromUtf8("widget"));
+        widget->setEnabled(true);
+        widget->setGeometry(QRect(380, 30, 361, 121));
         PLinBootloaderClass->setCentralWidget(centralWidget);
 
         retranslateUi(PLinBootloaderClass);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(4);
 
 
         QMetaObject::connectSlotsByName(PLinBootloaderClass);
@@ -438,6 +579,7 @@ public:
         PLinBootloaderClass->setWindowTitle(QCoreApplication::translate("PLinBootloaderClass", "PLinBootloader", nullptr));
         label->setText(QCoreApplication::translate("PLinBootloaderClass", "\347\241\254\344\273\266", nullptr));
         cbbSelectHW->setItemText(0, QCoreApplication::translate("PLinBootloaderClass", "PEAK-PLIN", nullptr));
+        cbbSelectHW->setItemText(1, QCoreApplication::translate("PLinBootloaderClass", "SPY3", nullptr));
 
         btnFresh->setText(QCoreApplication::translate("PLinBootloaderClass", "\345\210\267\346\226\260", nullptr));
         label_2->setText(QCoreApplication::translate("PLinBootloaderClass", "\351\200\232\351\201\223", nullptr));
@@ -479,6 +621,27 @@ public:
         label_5->setText(QCoreApplication::translate("PLinBootloaderClass", "\345\210\260", nullptr));
         btnErgodic->setText(QCoreApplication::translate("PLinBootloaderClass", "\351\201\215\345\216\206", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_4), QCoreApplication::translate("PLinBootloaderClass", "\346\265\213\350\257\225", nullptr));
+        label_7->setText(QCoreApplication::translate("PLinBootloaderClass", "\350\247\246\346\221\270\346\214\211\351\224\256ID", nullptr));
+        btnReadData->setText(QCoreApplication::translate("PLinBootloaderClass", "\350\257\273\345\217\226\346\225\260\346\215\256", nullptr));
+        btnReadPara->setText(QCoreApplication::translate("PLinBootloaderClass", "\350\257\273\345\217\202\346\225\260", nullptr));
+        label_8->setText(QCoreApplication::translate("PLinBootloaderClass", "\351\242\221\347\216\207", nullptr));
+        cnnFrequency->setItemText(0, QCoreApplication::translate("PLinBootloaderClass", "6000", nullptr));
+        cnnFrequency->setItemText(1, QCoreApplication::translate("PLinBootloaderClass", "3000", nullptr));
+        cnnFrequency->setItemText(2, QCoreApplication::translate("PLinBootloaderClass", "1500", nullptr));
+        cnnFrequency->setItemText(3, QCoreApplication::translate("PLinBootloaderClass", "750", nullptr));
+        cnnFrequency->setItemText(4, QCoreApplication::translate("PLinBootloaderClass", "375", nullptr));
+        cnnFrequency->setItemText(5, QCoreApplication::translate("PLinBootloaderClass", "187.5", nullptr));
+        cnnFrequency->setItemText(6, QCoreApplication::translate("PLinBootloaderClass", "93.75", nullptr));
+        cnnFrequency->setItemText(7, QCoreApplication::translate("PLinBootloaderClass", "46.88", nullptr));
+
+        label_9->setText(QCoreApplication::translate("PLinBootloaderClass", "\345\210\206\350\276\250\347\216\207", nullptr));
+        label_10->setText(QCoreApplication::translate("PLinBootloaderClass", "M_IDAC", nullptr));
+        label_11->setText(QCoreApplication::translate("PLinBootloaderClass", "C_IDAC", nullptr));
+        label_12->setText(QCoreApplication::translate("PLinBootloaderClass", "\346\211\213\346\214\207\351\230\210\345\200\274", nullptr));
+        label_13->setText(QCoreApplication::translate("PLinBootloaderClass", "\345\231\252\345\243\260\351\230\210\345\200\274", nullptr));
+        label_14->setText(QCoreApplication::translate("PLinBootloaderClass", "\350\277\237\346\273\236", nullptr));
+        btnReadDataStop->setText(QCoreApplication::translate("PLinBootloaderClass", "\345\201\234\346\255\242", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_5), QCoreApplication::translate("PLinBootloaderClass", "\350\247\246\346\221\270\345\217\202\346\225\260", nullptr));
         btnClear->setText(QCoreApplication::translate("PLinBootloaderClass", "\346\270\205\347\251\272", nullptr));
     } // retranslateUi
 

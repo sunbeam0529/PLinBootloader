@@ -43,13 +43,13 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>20</y>
       <width>361</width>
-      <height>331</height>
+      <height>311</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>4</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>false</bool>
@@ -94,6 +94,11 @@
          <item>
           <property name="text">
            <string>PEAK-PLIN</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>SPY3</string>
           </property>
          </item>
         </widget>
@@ -733,6 +738,215 @@
       </layout>
      </widget>
     </widget>
+    <widget class="QWidget" name="tab_5">
+     <attribute name="title">
+      <string>触摸参数</string>
+     </attribute>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>71</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>触摸按键ID</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnReadData">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>20</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>读取数据</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="spinBox">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>20</y>
+        <width>71</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnReadPara">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>50</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>读参数</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>90</y>
+        <width>211</width>
+        <height>178</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_4" columnstretch="1,2">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>频率</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="cnnFrequency">
+         <item>
+          <property name="text">
+           <string>6000</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>3000</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>1500</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>750</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>375</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>187.5</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>93.75</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>46.88</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>分辨率</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QSpinBox" name="spnResolution">
+         <property name="minimum">
+          <number>6</number>
+         </property>
+         <property name="maximum">
+          <number>12</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>M_IDAC</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QSpinBox" name="spnMIDAC">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>C_IDAC</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QSpinBox" name="spnCIDAC">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>手指阈值</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QSpinBox" name="spnFingerTH"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>噪声阈值</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QSpinBox" name="spnNoiseTH">
+         <property name="maximum">
+          <number>99</number>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>迟滞</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QSpinBox" name="spnHysteresis"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QPushButton" name="btnReadDataStop">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>20</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>停止</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
    <widget class="QTextBrowser" name="textBrowser">
     <property name="geometry">
@@ -740,7 +954,7 @@
       <x>380</x>
       <y>30</y>
       <width>361</width>
-      <height>291</height>
+      <height>281</height>
      </rect>
     </property>
    </widget>
@@ -757,9 +971,30 @@
      <string>清空</string>
     </property>
    </widget>
+   <widget class="QCustomPlot" name="widget" native="true">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>30</y>
+      <width>361</width>
+      <height>121</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="PLinBootloader.qrc"/>
  </resources>

@@ -2,12 +2,36 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <QFileDialog>
-
 PLinBootloader::PLinBootloader(QWidget *parent)
 	: QMainWindow(parent)
 {
+	
 	ui.setupUi(this);//初始化界面
-	this->Display(u8"加载成功"); 
+	ui.widget->hide();
+	Display(u8"加载成功"); 
+	timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(onTimeOut00()));
+	customPlot = ui.widget;
+	customPlot->addGraph();//添加graph等价于添加新曲线
+	customPlot->graph(0)->setPen(QPen(Qt::blue));// 曲线的颜色
+	customPlot->addGraph();//添加graph等价于添加新曲线
+	customPlot->graph(1)->setPen(QPen(Qt::red));// 曲线的颜色
+
+	x.resize(50);
+	y0.resize(50);
+	y1.resize(50);
+	for (int i = 0; i < 50; ++i)
+	{
+		x[i] = i;
+		y0[i] = 0; // 第一条曲线
+		y1[i] = 0; // 第二条曲线
+	}
+	customPlot->graph(0)->setData(x, y0);
+	customPlot->graph(1)->setData(x, y1);
+
+	customPlot->graph(0)->rescaleAxes();//自动缩放
+	customPlot->graph(1)->rescaleAxes(true);
+	//
 	ui.btnStop->setEnabled(FALSE);//设置停止按钮为禁用
 	if (this->LoadDLL() == LOADDLL_ERR)//加载DLL文件
 	{
@@ -30,6 +54,31 @@ PLinBootloader::~PLinBootloader(void)
 	FreeLibrary(m_hDll);//释放DLL
 }
 
+void PLinBootloader::onTimeOut00(void)
+{
+	BYTE temp[8] = { 0x21,0x02,0x25,0x00,0xff,0xff,0xff,0xff };
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		timer->stop();
+		ui.btnReadData->setEnabled(TRUE);
+		return;
+	}
+	else
+	{
+		Display(u8"读取数据");
+	}
+	TransmitID(0);//唤醒
+	Sleep(10);
+	Write3C(temp);//发送诊断请求
+	Sleep(10);
+	ReadMsg();
+	Read3D();//读取数据
+
+	
+
+}
+
 
 void PLinBootloader::Display(string s) 
 {
@@ -40,6 +89,18 @@ void PLinBootloader::Display(string s)
 
 void PLinBootloader::on_btnFresh_clicked(void)
 {
+	int iResult;
+	NeoDevice ndNeoToOpen;
+	int iNumberOfDevices;
+	//ui.textBrowser->append(QString::number(ui.cbbSelectHW->currentIndex()));//显示当前选择的序号，测试结果从0开始
+	/*
+	if(ui.cbbSelectHW == 0)	//PCAN
+		FreshHW();//刷新硬件
+	else if (ui.cbbSelectHW == 0)//SPY3
+	{
+		iResult = icsneoFindNeoDevices(8,&ndNeoToOpen,&iNumberOfDevices);
+	}
+		*/
 	FreshHW();//刷新硬件
 }
 
@@ -80,6 +141,7 @@ void PLinBootloader::on_btnDID_ReadSW_clicked(void)
 
 void PLinBootloader::on_btnDID_ReadHW_clicked(void)
 {
+
 	BYTE temp[8] = { 0x21,0x03,0x22,0xf1,0x92,0xff,0xff,0xff };
 	if (m_hClient == NULL)
 	{
@@ -436,6 +498,51 @@ void PLinBootloader::on_btnErgodic_clicked(void)
 		ReadMsg();		//读取数据
 	}
 	Display(u8"结束遍历");
+}
+
+void PLinBootloader::on_btnReadData_clicked(void)
+{
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"读取数据");
+	}
+	datatime = 0;
+	ui.widget->show();
+	timer->start(50);
+	ui.btnReadData->setEnabled(FALSE);
+}
+
+void PLinBootloader::on_btnReadDataStop_clicked(void)
+{
+	timer->stop();
+	ui.btnReadData->setEnabled(TRUE);
+	ui.widget->hide();
+}
+
+
+void PLinBootloader::on_btnReadPara_clicked(void)
+{	
+	BYTE temp[8] = { 0x21,0x03,0x26,0x01,0x00,0xff,0xff,0xff };
+	if (m_hClient == NULL)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"读取参数");
+	}
+	TransmitID(0);//唤醒
+	Sleep(10);
+	Write3C(temp);//发送诊断请求
+	Sleep(10);
+	ReadMsg();
+	Read3D();//读取数据
 }
 
 int PLinBootloader::LoadDLL(void)
@@ -1064,6 +1171,63 @@ void PLinBootloader::ProcessDiag(BYTE* buffer)
 			buffer[len + 1] = '\0';
 			ui.lbl_DIDPART->setText(QString::fromStdString((char*)(&buffer[4])));
 		}
+	}
+	else if (buffer[1] == 0x65)
+	{
+		int baseline, raw,i;
+		baseline = (buffer[3] << 8) | buffer[4];
+		raw = (buffer[5] << 8) | buffer[6];
+		
+		if (baselinedata.count() < 50)
+		{
+			baselinedata.append(baseline);
+			rawdata.append(raw);
+			for (i = 0; i < baselinedata.count(); i++)
+			{
+				y0[i] = baselinedata[i];
+				y1[i] = rawdata[i];
+			}
+		}
+		else
+		{
+			baselinedata.removeFirst();
+			rawdata.removeFirst();
+			baselinedata.append(baseline);
+			rawdata.append(raw);
+			for (i = 0; i < 50; i++)
+			{
+				y0[i] = baselinedata[i];
+				y1[i] = rawdata[i];
+			}
+		}
+		
+		//customPlot->graph(0)->addData((double)datatime, (double)baseline);
+		//customPlot->graph(1)->addData(datatime, raw);
+
+		customPlot->graph(0)->setData(x, y0);
+		customPlot->graph(1)->setData(x, y1);
+
+		customPlot->graph(0)->rescaleAxes();//自动缩放
+		customPlot->graph(1)->rescaleAxes(true);
+		customPlot->replot();
+		datatime++;
+
+	}
+	else if (buffer[1] == 0x66 && buffer[2] == 0x01) //读参数
+	{
+		for (int i = 2; i < 8; i++)
+		{
+			if (buffer[4] == (0x01 << i))
+			{
+				ui.cnnFrequency->currentIndexChanged(i - 2);
+			}
+		}
+		ui.spnResolution->setValue(buffer[5]);
+		ui.spnMIDAC->setValue(buffer[6]);
+		ui.spnCIDAC->setValue(buffer[7]);
+		ui.spnFingerTH->setValue(buffer[8]);
+		ui.spnNoiseTH->setValue(buffer[9]);
+		ui.spnHysteresis->setValue(buffer[10]);
 	}
 }
 
