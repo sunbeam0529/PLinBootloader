@@ -7,6 +7,7 @@
 #include <string>
 #include <QQueue>
 #include <QDateTime>
+#include "qcustomplot.h"
 // Function pointers
 //
 typedef TLINError(__stdcall* fpOneParamCli) (HLINCLIENT);
@@ -152,6 +153,8 @@ public:
 
 	
 
+	
+
 private slots:
 	void on_btnFresh_clicked(void);
 	void on_btnConnect_clicked(void);
@@ -170,9 +173,10 @@ private slots:
 	void on_btnReadData_clicked(void);
 	void on_btnReadDataStop_clicked(void);
 	void on_btnReadPara_clicked(void);
+	void on_btnWritePara_clicked(void);
 	void on_btnErgodic_clicked(void);
 	void onTimeOut00(void);
-	
+	void onSwitchButton_Clicked(void);
 
 private:
 	HINSTANCE m_hDll = NULL;
@@ -302,6 +306,8 @@ private:
 	
 
 	void Display(string s);
+
+	
 
 	int LoadDLL(void);
 

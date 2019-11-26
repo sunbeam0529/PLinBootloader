@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'PLinBootloader.ui'
 **
-** Created by: Qt User Interface Compiler version 5.13.0
+** Created by: Qt User Interface Compiler version 5.13.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -15,6 +15,7 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
@@ -24,7 +25,9 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTextBrowser>
 #include <QtWidgets/QWidget>
+#include "lightbutton.h"
 #include "qcustomplot.h"
+#include "switchbutton.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -86,6 +89,8 @@ public:
     QLabel *label_5;
     QLineEdit *lineID2;
     QPushButton *btnErgodic;
+    SwitchButton *switchButton;
+    LightButton *lightButton;
     QWidget *tab_5;
     QLabel *label_7;
     QPushButton *btnReadData;
@@ -108,6 +113,8 @@ public:
     QLabel *label_14;
     QSpinBox *spnHysteresis;
     QPushButton *btnReadDataStop;
+    QPushButton *btnWritePara;
+    QLCDNumber *lcdNumber;
     QTextBrowser *textBrowser;
     QPushButton *btnClear;
     QCustomPlot *widget;
@@ -132,7 +139,7 @@ public:
         tabWidget = new QTabWidget(centralWidget);
         tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
         tabWidget->setEnabled(true);
-        tabWidget->setGeometry(QRect(10, 20, 361, 311));
+        tabWidget->setGeometry(QRect(10, 10, 361, 331));
         tabWidget->setTabBarAutoHide(false);
         tab = new QWidget();
         tab->setObjectName(QString::fromUtf8("tab"));
@@ -442,6 +449,13 @@ public:
 
         horizontalLayout->addWidget(btnErgodic);
 
+        switchButton = new SwitchButton(tab_4);
+        switchButton->setObjectName(QString::fromUtf8("switchButton"));
+        switchButton->setGeometry(QRect(90, 120, 60, 30));
+        switchButton->setChecked(false);
+        lightButton = new LightButton(tab_4);
+        lightButton->setObjectName(QString::fromUtf8("lightButton"));
+        lightButton->setGeometry(QRect(20, 110, 51, 41));
         tabWidget->addTab(tab_4, QString());
         tab_5 = new QWidget();
         tab_5->setObjectName(QString::fromUtf8("tab_5"));
@@ -553,6 +567,13 @@ public:
         btnReadDataStop = new QPushButton(tab_5);
         btnReadDataStop->setObjectName(QString::fromUtf8("btnReadDataStop"));
         btnReadDataStop->setGeometry(QRect(260, 20, 75, 23));
+        btnWritePara = new QPushButton(tab_5);
+        btnWritePara->setObjectName(QString::fromUtf8("btnWritePara"));
+        btnWritePara->setGeometry(QRect(250, 250, 75, 23));
+        lcdNumber = new QLCDNumber(tab_5);
+        lcdNumber->setObjectName(QString::fromUtf8("lcdNumber"));
+        lcdNumber->setGeometry(QRect(280, 100, 64, 23));
+        lcdNumber->setFrameShape(QFrame::Box);
         tabWidget->addTab(tab_5, QString());
         textBrowser = new QTextBrowser(centralWidget);
         textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
@@ -568,7 +589,7 @@ public:
 
         retranslateUi(PLinBootloaderClass);
 
-        tabWidget->setCurrentIndex(4);
+        tabWidget->setCurrentIndex(3);
 
 
         QMetaObject::connectSlotsByName(PLinBootloaderClass);
@@ -641,6 +662,7 @@ public:
         label_13->setText(QCoreApplication::translate("PLinBootloaderClass", "\345\231\252\345\243\260\351\230\210\345\200\274", nullptr));
         label_14->setText(QCoreApplication::translate("PLinBootloaderClass", "\350\277\237\346\273\236", nullptr));
         btnReadDataStop->setText(QCoreApplication::translate("PLinBootloaderClass", "\345\201\234\346\255\242", nullptr));
+        btnWritePara->setText(QCoreApplication::translate("PLinBootloaderClass", "\345\206\231\345\217\202\346\225\260", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_5), QCoreApplication::translate("PLinBootloaderClass", "\350\247\246\346\221\270\345\217\202\346\225\260", nullptr));
         btnClear->setText(QCoreApplication::translate("PLinBootloaderClass", "\346\270\205\347\251\272", nullptr));
     } // retranslateUi
