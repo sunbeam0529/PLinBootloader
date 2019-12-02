@@ -116,6 +116,7 @@
     <ClCompile Include="CGlobalFrameTable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PLinBootloader.cpp" />
+    <ClCompile Include="PLIN_Driver.cpp" />
     <ClCompile Include="qcustomplot.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +136,7 @@
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore</IncludePath>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore</IncludePath>
     </QtMoc>
+    <ClInclude Include="PLIN_Driver.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
