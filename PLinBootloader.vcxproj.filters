@@ -45,6 +45,9 @@
     <ClCompile Include="PLIN_Driver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SPY3_Driver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="PLinBootloader.h">
@@ -78,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PLIN_Driver.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SPY3_Driver.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
