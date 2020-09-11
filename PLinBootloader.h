@@ -29,11 +29,14 @@ class PLinBootloader : public QMainWindow
 public:
 	PLinBootloader(QWidget *parent = Q_NULLPTR);
 	~PLinBootloader(void);
+	
 	QList<QString>*HWList;
 
 	
 
 private slots:
+	void on_sb_LightBarStart_checkedChanged(bool value);
+	void on_btnWriteCfg_clicked(void);
 	void on_btnFresh_clicked(void);
 	void on_btnConnect_clicked(void);
 	void on_btnStop_clicked(void);
@@ -45,16 +48,24 @@ private slots:
 	void on_btnDID_ReadModel_clicked(void);
 	void on_btn_AppMode_clicked(void);
 	void on_btn_BootMode_clicked(void);
+	void on_btn_ExtMode_clicked(void);
+	void on_btn_ReadMode_clicked(void);
 	void on_bnt_Unlock_clicked(void);
 	void on_btnSelectAppFile_clicked(void);
 	void on_btnOneKeyBoot_clicked(void);
+	void on_btnTest_clicked(void);
 	void on_btnReadData_clicked(void);
 	void on_btnReadDataStop_clicked(void);
 	void on_btnReadPara_clicked(void);
 	void on_btnWritePara_clicked(void);
 	void on_btnErgodic_clicked(void);
+	void on_btnErgodicNAD_clicked(void);
+	void on_btnErgodicSID_clicked(void);
+	void on_btnErgodicDID_clicked(void);
 	void onTimeOut00(void);
-	void onSwitchButton_Clicked(void);
+	void onTimeOut01(void);
+	void on_colorPanelHSB_colorChanged(const QColor& color, double hue, double sat);
+
 
 private:
 	
@@ -89,11 +100,15 @@ private:
 
 	void TransmitID(int id);
 
+	void TransmitID(int id, BYTE* data);
+
 	int CalculatePID(int id);
 
 	void Transmit3DHead(void);
 
 	void Read3D(void);
+
+	void Read3D(BYTE NAD);
 
 	int Wait3D(BYTE* data, int times);
 

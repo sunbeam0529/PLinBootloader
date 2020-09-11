@@ -12,8 +12,7 @@ PLinBootloader::PLinBootloader(QWidget *parent)
 	ui.widget->hide();
 	Display(u8"加载成功"); 
 	timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(onTimeOut00()));
-	connect(ui.switchButton, SIGNAL(checkedChanged(bool)), this, SLOT(onSwitchButton_Clicked()));
+	
 	customPlot = ui.widget;
 	customPlot->addGraph();//添加graph等价于添加新曲线
 	customPlot->graph(0)->setPen(QPen(Qt::blue));// 曲线的颜色
@@ -64,18 +63,28 @@ PLinBootloader::~PLinBootloader(void)
 	
 }
 
-void PLinBootloader::onSwitchButton_Clicked(void)
+void PLinBootloader::on_sb_LightBarStart_checkedChanged(bool value)
 {
-	if (ui.switchButton->getChecked())
+	Display((QString::number((int)value)).toStdString());
+	if (value)
 	{
-		ui.lightButton->setRed();
+		connect(timer, SIGNAL(timeout()), this, SLOT(onTimeOut01()));
+		timer->start(100);
 	}
 	else
 	{
-		ui.lightButton->setLightBlue();
+		timer->stop();
 	}
-	
 }
+void PLinBootloader::on_colorPanelHSB_colorChanged(const QColor& color, double hue, double sat)
+{
+	ui.colorPanelBar_2->colorChanged(ui.colorPanelBar_2->getColor(), hue, sat);
+	//Display(color.name().toStdString());
+	
+	Display((QString::number(hue) + "," + QString::number(sat)).toStdString());
+}
+
+
 
 void PLinBootloader::onTimeOut00(void)
 {
@@ -102,6 +111,26 @@ void PLinBootloader::onTimeOut00(void)
 
 }
 
+void PLinBootloader::onTimeOut01(void)
+{
+	BYTE temp[8] = { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 };
+	if (pd.isConnect() == RET_ERR)
+	{
+		Display(u8"硬件未连接");
+		timer->stop();
+		ui.btnReadData->setEnabled(TRUE);
+		return;
+	}
+
+	temp[1] = ui.spin_SelectLED->value();//led id
+	temp[2] = (BYTE)(ui.colorPanelBar->getValue());//led brightness
+	temp[3] = ui.colorPanelBar_2->getColor().red();//red
+	temp[4] = ui.colorPanelBar_2->getColor().blue();//green
+	temp[5] = ui.colorPanelBar_2->getColor().green();//blue
+
+	TransmitID(1, temp);
+	ReadMsg();
+}
 
 void PLinBootloader::Display(string s) 
 {
@@ -110,9 +139,37 @@ void PLinBootloader::Display(string s)
 }
 
 
+void PLinBootloader::on_btnWriteCfg_clicked(void)
+{
+	BYTE temp[8] = { 0x21,0x04,0x2E,0xF0,0x01,0xff,0xff,0xff };
+	if (pd.isConnect() == RET_ERR)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"写配置");
+	}
+	temp[5] = ui.spinWriteCfg->value();
+	if (temp[5] >= 0 && temp[5] <= 3)
+	{
+		TransmitID(0);//唤醒
+		Sleep(10);
+		Write3C(temp);//发送诊断请求
+		Sleep(10);
+		ReadMsg();
+		Read3D();//读取数据
+	}
+	else
+	{
+		Display(u8"配置错误");
+	}
+}
+
 void PLinBootloader::on_btnFresh_clicked(void)
 {
-	
+	//QList<UINT8> datebuf(256);
 	int ret;
 	ui.cbbSelectChenal->clear();
 	ret = pd.FreshHW(HWList);//刷新硬件
@@ -161,12 +218,13 @@ void PLinBootloader::on_btnDID_ReadSW_clicked(void)
 	{
 		Display(u8"读取软件版本号");
 	}
+	temp[0] = ui.lineEdit->text().toInt(NULL, 16);
 	TransmitID(0);//唤醒
 	Sleep(10);
 	Write3C(temp);//发送诊断请求
 	Sleep(10);
 	ReadMsg();
-	Read3D();//读取数据
+	Read3D(temp[0]);//读取数据
 }
 
 void PLinBootloader::on_btnDID_ReadHW_clicked(void)
@@ -182,12 +240,13 @@ void PLinBootloader::on_btnDID_ReadHW_clicked(void)
 	{
 		Display(u8"读取硬件版本号");
 	}
+	temp[0] = ui.lineEdit->text().toInt(NULL, 16);
 	TransmitID(0);//唤醒
 	Sleep(10);
 	Write3C(temp);//发送诊断请求
 	Sleep(10);
 	ReadMsg();
-	Read3D();//读取数据
+	Read3D(temp[0]);//读取数据
 }
 
 void PLinBootloader::on_btnDID_ReadBoot_clicked(void)
@@ -202,12 +261,13 @@ void PLinBootloader::on_btnDID_ReadBoot_clicked(void)
 	{
 		Display(u8"读取Bootloader版本号");
 	}
+	temp[0] = ui.lineEdit->text().toInt(NULL,16);
 	TransmitID(0);//唤醒
 	Sleep(10);
 	Write3C(temp);//发送诊断请求
 	Sleep(10);
 	ReadMsg();
-	Read3D();//读取数据
+	Read3D(temp[0]);//读取数据
 }
 
 void PLinBootloader::on_btnDID_ReadPartnum_clicked(void)
@@ -222,12 +282,13 @@ void PLinBootloader::on_btnDID_ReadPartnum_clicked(void)
 	{
 		Display(u8"读取零件号");
 	}
+	temp[0] = ui.lineEdit->text().toInt(NULL, 16);
 	TransmitID(0);//唤醒
 	Sleep(10);
 	Write3C(temp);//发送诊断请求
 	Sleep(10);
 	ReadMsg();
-	Read3D();//读取数据
+	Read3D(temp[0]);//读取数据
 }
 
 void PLinBootloader::on_btnDID_ReadModel_clicked(void)
@@ -242,12 +303,13 @@ void PLinBootloader::on_btnDID_ReadModel_clicked(void)
 	{
 		Display(u8"读取型号");
 	}
+	temp[0] = ui.lineEdit->text().toInt(NULL, 16);
 	TransmitID(0);//唤醒
 	Sleep(10);
 	Write3C(temp);//发送诊断请求
 	Sleep(10);
 	ReadMsg();
-	Read3D();//读取数据
+	Read3D(temp[0]);//读取数据
 }
 
 void PLinBootloader::on_btn_AppMode_clicked(void)
@@ -262,12 +324,13 @@ void PLinBootloader::on_btn_AppMode_clicked(void)
 	{
 		Display(u8"进入APP");
 	}
+	temp[0] = ui.lineEdit->text().toInt(NULL, 16);
 	TransmitID(0);//唤醒
 	Sleep(10);
 	Write3C(temp);//发送诊断请求
 	Sleep(10);
 	ReadMsg();
-	Read3D();//读取数据
+	Read3D(temp[0]);//读取数据
 }
 
 void PLinBootloader::on_btn_BootMode_clicked(void)
@@ -282,14 +345,57 @@ void PLinBootloader::on_btn_BootMode_clicked(void)
 	{
 		Display(u8"进入BOOT");
 	}
+	temp[0] = ui.lineEdit->text().toInt(NULL, 16);
 	TransmitID(0);//唤醒
 	Sleep(10);
 	Write3C(temp);//发送诊断请求
 	Sleep(10);
 	ReadMsg();
-	Read3D();//读取数据
+	Read3D(temp[0]);//读取数据
 }
 
+void PLinBootloader::on_btn_ExtMode_clicked(void)
+{
+	BYTE temp[8] = { 0x21,0x02,0x10,0x03,0xff,0xff,0xff,0xff };
+	if (pd.isConnect() == RET_ERR)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"进入扩展会话");
+	}
+	temp[0] = ui.lineEdit->text().toInt(NULL, 16);
+	TransmitID(0);//唤醒
+	Sleep(10);
+	Write3C(temp);//发送诊断请求
+	Sleep(10);
+	ReadMsg();
+	Read3D(temp[0]);//读取数据
+}
+
+void PLinBootloader::on_btn_ReadMode_clicked(void)
+{
+	BYTE temp[8] = { 0x21,0x03,0x22,0xF1,0x86,0xff,0xff,0xff };
+	if (pd.isConnect() == RET_ERR)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"读取当前会话");
+	}
+	temp[0] = ui.lineEdit->text().toInt(NULL, 16);
+	TransmitID(0);//唤醒
+	Sleep(10);
+	Write3C(temp);//发送诊断请求
+	Sleep(10);
+	ReadMsg();
+	Read3D(temp[0]);//读取数据
+
+}
 void PLinBootloader::on_bnt_Unlock_clicked(void)
 {
 	BYTE temp[8] = { 0x21,0x02,0x27,0x01,0xff,0xff,0xff,0xff };
@@ -530,6 +636,136 @@ void PLinBootloader::on_btnErgodic_clicked(void)
 	Display(u8"结束遍历");
 }
 
+void PLinBootloader::on_btnErgodicNAD_clicked(void)
+{
+	int IDfrom, IDto;
+	QString temp;
+	BYTE BUF[8] = { 0x21,0x03,0x22,0xF1,0x89,0x00,0x00,0x00 };
+	if (pd.isConnect() == RET_ERR)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"开始遍历");
+	}
+	temp = ui.lineID3->text();//起始ID
+	IDfrom = temp.toInt();
+	temp = ui.lineID4->text();//结束ID
+	IDto = temp.toInt();
+	temp.clear();
+	for (int id = IDfrom; id <= IDto; id++)
+	{
+		BUF[0] = id;
+		Write3C(BUF); //发送ID帧头
+		Sleep(10);		//等待10mS
+		Read3D(id);		//读取数据
+	}
+	Display(u8"结束遍历");
+}
+
+
+void PLinBootloader::on_btnErgodicSID_clicked(void)
+{
+	int IDfrom, IDto;
+	QString temp;
+	BYTE BUF[8] = { 0x0A,0x03,0x22,0xF1,0x89,0x00,0x00,0x00 };
+	if (pd.isConnect() == RET_ERR)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"开始遍历");
+	}
+	temp = ui.lineID5->text();//起始ID
+	IDfrom = temp.toInt();
+	temp = ui.lineID6->text();//结束ID
+	IDto = temp.toInt();
+	temp.clear();
+	for (int SID = IDfrom; SID <= IDto; SID++)
+	{
+		BUF[2] = SID;
+		Write3C(BUF); //发送ID帧头
+		Sleep(10);		//等待10mS
+		Read3D(0x0A);		//读取数据
+	}
+	Display(u8"结束遍历");
+}
+
+void PLinBootloader::on_btnErgodicDID_clicked(void)
+{
+	int IDfrom, IDto;
+	QString temp;
+	BYTE BUF[8] = { 0x0A,0x04,0x2e,0xF1,0x89,0x00,0x00,0x00 };
+	unsigned int didlist[24] = { 0xF187, 0xF189, 0xF191, 0xF1A3, 0x062E, 0x065E, 0x068E, 0x06BE, 0x06EE, 0x071E, 0x074E, 0x6031,
+								 0x6231, 0x6431, 0x6631, 0x6831, 0x6A31, 0x6C31, 0xF15B, 0xF186, 0xF198, 0xF19E, 0xF1A2, 0xF1DF };
+	if (pd.isConnect() == RET_ERR)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"开始遍历");
+	}
+	temp = ui.lineID7->text();//起始ID
+	IDfrom = temp.toInt();
+	temp = ui.lineID8->text();//结束ID
+	IDto = temp.toInt();
+	temp.clear(); 
+	/*
+	for (int DID = IDfrom; DID <= IDto; DID++)
+	{
+		BUF[3] = DID >> 8;
+		BUF[4] = DID;
+		Write3C(BUF); //发送ID帧头
+		Sleep(10);		//等待10mS
+		Read3D(0x0A);		//读取数据
+	}
+	*/
+	for (int DID = 0; DID < 24; DID++)
+	{
+		BUF[3] = didlist[DID] >> 8;
+		BUF[4] = didlist[DID];
+		Write3C(BUF); //发送ID帧头
+		Sleep(10);		//等待10mS
+		Read3D(0x0A);		//读取数据
+	}
+	Display(u8"结束遍历");
+}
+//btnTest
+void PLinBootloader::on_btnTest_clicked(void)
+{
+	int IDfrom, IDto;
+	QString temp;
+	BYTE BUF[8] = { 0x0A,0x06,0xB0,0x00,0x00,0x00,0x00,0x21 };
+	if (pd.isConnect() == RET_ERR)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"开始自定义测试");
+	}
+	
+	BUF[0] = ui.lETest_B0->text().toInt(NULL, 16);
+	BUF[1] = ui.lETest_B1->text().toInt(NULL, 16);
+	BUF[2] = ui.lETest_B2->text().toInt(NULL, 16);
+	BUF[3] = ui.lETest_B3->text().toInt(NULL, 16);
+	BUF[4] = ui.lETest_B4->text().toInt(NULL, 16);
+	BUF[5] = ui.lETest_B5->text().toInt(NULL, 16);
+	BUF[6] = ui.lETest_B6->text().toInt(NULL, 16);
+	BUF[7] = ui.lETest_B7->text().toInt(NULL, 16);
+
+		Write3C(BUF); //发送ID帧头
+		Sleep(10);		//等待10mS
+		Read3D(BUF[0]);		//读取数据
+
+}
 void PLinBootloader::on_btnReadData_clicked(void)
 {
 	if (pd.isConnect() == RET_ERR)
@@ -542,6 +778,7 @@ void PLinBootloader::on_btnReadData_clicked(void)
 		Display(u8"读取数据");
 	}
 	datatime = 0;
+	connect(timer, SIGNAL(timeout()), this, SLOT(onTimeOut00()));
 	ui.widget->show();
 	timer->start(50);
 	ui.btnReadData->setEnabled(FALSE);
@@ -824,6 +1061,24 @@ void PLinBootloader::TransmitID(int id)
 	pd.Write(pd.m_hClient, pd.m_hHW, &msg);
 }
 
+void PLinBootloader::TransmitID(int id,BYTE * data)
+{
+	TLINMsg msg;
+	if (pd.isConnect() == RET_ERR)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	msg.FrameId = CalculatePID(id);
+	msg.Direction = dirPublisher;// 
+	msg.Length = 8;
+	msg.ChecksumType = cstEnhanced;
+	for (int i = 0; i < 8; i++)
+		msg.Data[i] = data[i];
+	pd.CalculateChecksum(&msg);
+	pd.Write(pd.m_hClient, pd.m_hHW, &msg);
+}
+
 int PLinBootloader::CalculatePID(int ID)
 {
 	int P0, P1;
@@ -877,6 +1132,42 @@ void PLinBootloader::Read3D(void)
 		else if (temp[1] < 7)
 		{
 			putdata(temp + 1, buffer, temp[1]+1);
+
+			break;
+		}
+
+
+		Transmit3DHead();
+		Sleep(10);
+		temp[0] = 0x00;
+		ReadMsg(temp);
+	}
+	ProcessDiag(buffer);
+}
+void PLinBootloader::Read3D(BYTE NAD)
+{
+	TLINRcvMsg RcvMsg;
+	BYTE temp[8], buffer[60] = { 0 }, * pbuffer;
+	Transmit3DHead();
+	Sleep(10);
+	temp[0] = 0x00;
+	ReadMsg(temp);
+	pbuffer = buffer;
+	while (temp[0] == NAD && NAD!=0)
+	{
+		if (temp[1] == 0x10)
+		{
+			putdata(temp + 2, pbuffer, 6);
+			pbuffer += 6;
+		}
+		else if (temp[1] >= 0x20)
+		{
+			putdata(temp + 2, pbuffer, 6);
+			pbuffer += 6;
+		}
+		else if (temp[1] < 7)
+		{
+			putdata(temp + 1, buffer, temp[1] + 1);
 
 			break;
 		}
@@ -951,6 +1242,11 @@ void PLinBootloader::ProcessDiag(BYTE* buffer)
 		{
 			buffer[len + 1] = '\0';
 			ui.lbl_DIDPART->setText(QString::fromStdString((char*)(&buffer[4])));
+		}
+		else
+		{
+			buffer[len + 1] = '\0';
+			Display(QString::fromStdString((char*)(&buffer[4])).toStdString());
 		}
 	}
 	else if (buffer[1] == 0x65)
