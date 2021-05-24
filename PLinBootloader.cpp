@@ -3,6 +3,9 @@
 #include <windows.h>
 #include <QFileDialog>
 
+#define DIDNO_SWVERSION		0x068E
+#define DIDNO_HWVERSION		0xF1A3
+
 
 PLinBootloader::PLinBootloader(QWidget *parent)
 	: QMainWindow(parent)
@@ -55,6 +58,14 @@ PLinBootloader::PLinBootloader(QWidget *parent)
 	}
 	ui.progressBar->setValue(0);//设置进度条为0
 	BootState = 0;//初始化状态
+	
+	int count = ui.tabWidget->count();
+	for (int i = 2; i < count; i++)
+	{
+		ui.tabWidget->removeTab(2);
+	}
+	ui.tabWidget->setTabEnabled(1, false);
+
 }
 
 PLinBootloader::~PLinBootloader(void)
@@ -175,7 +186,7 @@ void PLinBootloader::on_btnFresh_clicked(void)
 	ret = pd.FreshHW(HWList);//刷新硬件
 	if (ret == RET_ERR)
 	{
-		ui.cbbSelectChenal->addItem("未找到硬件");
+		ui.cbbSelectChenal->addItem(u8"未找到硬件");
 	}
 	for (int i = 0; i < HWList->count(); i++)
 	{
@@ -191,6 +202,7 @@ void PLinBootloader::on_btnConnect_clicked(void)
 	{
 		ui.btnStop->setEnabled(TRUE);
 		ui.btnConnect->setEnabled(FALSE);
+		ui.tabWidget->setTabEnabled(1, true);
 	}
 }
 
@@ -208,7 +220,8 @@ void PLinBootloader::on_btnClear_clicked(void)
 
 void PLinBootloader::on_btnDID_ReadSW_clicked(void)
 {
-	BYTE temp[8] = { 0x21,0x03,0x22,0xf1,0x94,0xff,0xff,0xff };
+	//BYTE temp[8] = { 0x21,0x03,0x22,0xf1,0x94,0xff,0xff,0xff };
+	BYTE temp[8] = { 0x21,0x03,0x22,DIDNO_SWVERSION>>8,DIDNO_SWVERSION,0xff,0xff,0xff };
 	if (pd.isConnect() == RET_ERR)
 	{
 		Display(u8"硬件未连接");
@@ -218,6 +231,7 @@ void PLinBootloader::on_btnDID_ReadSW_clicked(void)
 	{
 		Display(u8"读取软件版本号");
 	}
+	ui.lbl_DIDSW->clear();
 	temp[0] = ui.lineEdit->text().toInt(NULL, 16);
 	TransmitID(0);//唤醒
 	Sleep(10);
@@ -230,7 +244,8 @@ void PLinBootloader::on_btnDID_ReadSW_clicked(void)
 void PLinBootloader::on_btnDID_ReadHW_clicked(void)
 {
 
-	BYTE temp[8] = { 0x21,0x03,0x22,0xf1,0x92,0xff,0xff,0xff };
+	//BYTE temp[8] = { 0x21,0x03,0x22,0xf1,0x92,0xff,0xff,0xff };
+	BYTE temp[8] = { 0x21,0x03,0x22,DIDNO_HWVERSION>>8,DIDNO_HWVERSION,0xff,0xff,0xff };
 	if (pd.isConnect() == RET_ERR)
 	{
 		Display(u8"硬件未连接");
@@ -240,6 +255,7 @@ void PLinBootloader::on_btnDID_ReadHW_clicked(void)
 	{
 		Display(u8"读取硬件版本号");
 	}
+	ui.lbl_DIDHW->clear();
 	temp[0] = ui.lineEdit->text().toInt(NULL, 16);
 	TransmitID(0);//唤醒
 	Sleep(10);
@@ -1206,7 +1222,7 @@ void PLinBootloader::ProcessDiag(BYTE* buffer)
 		DID = buffer[2];
 		DID <<= 8;
 		DID |= buffer[3];
-		if (DID == 0xF194)
+		if (DID == DIDNO_SWVERSION)
 		{
 			buffer[len+1] = '\0';
 			//Display((char *)(&buffer[4]));
@@ -1217,7 +1233,7 @@ void PLinBootloader::ProcessDiag(BYTE* buffer)
 			else if(BootState == 2)
 				ui.lbl_DIDSW_3->setText(QString::fromStdString((char*)(&buffer[4])));
 		}
-		else if (DID == 0xF192)
+		else if (DID == DIDNO_HWVERSION)
 		{
 			buffer[len + 1] = '\0';
 			if (BootState == 0)
