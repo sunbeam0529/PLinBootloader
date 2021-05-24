@@ -21,6 +21,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTextBrowser>
@@ -70,6 +71,10 @@ public:
     QLabel *label_18;
     QPushButton *btn_ExtMode;
     QPushButton *btn_ReadMode;
+    QPushButton *btn_ECUReset;
+    QRadioButton *radioButton_1;
+    QRadioButton *radioButton_2;
+    QRadioButton *radioButton_3;
     QWidget *tab_3;
     QLineEdit *line_fileaddress;
     QLabel *lbl_lable_5;
@@ -374,6 +379,18 @@ public:
         btn_ReadMode = new QPushButton(tab_2);
         btn_ReadMode->setObjectName(QString::fromUtf8("btn_ReadMode"));
         btn_ReadMode->setGeometry(QRect(10, 70, 75, 23));
+        btn_ECUReset = new QPushButton(tab_2);
+        btn_ECUReset->setObjectName(QString::fromUtf8("btn_ECUReset"));
+        btn_ECUReset->setGeometry(QRect(140, 105, 75, 23));
+        radioButton_1 = new QRadioButton(tab_2);
+        radioButton_1->setObjectName(QString::fromUtf8("radioButton_1"));
+        radioButton_1->setGeometry(QRect(20, 110, 31, 16));
+        radioButton_2 = new QRadioButton(tab_2);
+        radioButton_2->setObjectName(QString::fromUtf8("radioButton_2"));
+        radioButton_2->setGeometry(QRect(60, 110, 31, 16));
+        radioButton_3 = new QRadioButton(tab_2);
+        radioButton_3->setObjectName(QString::fromUtf8("radioButton_3"));
+        radioButton_3->setGeometry(QRect(100, 110, 31, 16));
         tabWidget->addTab(tab_2, QString());
         tab_3 = new QWidget();
         tab_3->setObjectName(QString::fromUtf8("tab_3"));
@@ -816,7 +833,7 @@ public:
         QObject::connect(colorPanelHSB, SIGNAL(colorChanged(QColor,double,double)), colorPanelBar_2, SLOT(setTopColor(QColor)));
         QObject::connect(colorPanelBar_2, SIGNAL(colorChanged(QColor,double,double)), colorPanelBar, SLOT(setTopColor(QColor)));
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(PLinBootloaderClass);
@@ -856,6 +873,10 @@ public:
         label_18->setText(QCoreApplication::translate("PLinBootloaderClass", "NAD", nullptr));
         btn_ExtMode->setText(QCoreApplication::translate("PLinBootloaderClass", "ExtMode", nullptr));
         btn_ReadMode->setText(QCoreApplication::translate("PLinBootloaderClass", "\345\275\223\345\211\215\344\274\232\350\257\235", nullptr));
+        btn_ECUReset->setText(QCoreApplication::translate("PLinBootloaderClass", "ECU Reset", nullptr));
+        radioButton_1->setText(QCoreApplication::translate("PLinBootloaderClass", "1", nullptr));
+        radioButton_2->setText(QCoreApplication::translate("PLinBootloaderClass", "2", nullptr));
+        radioButton_3->setText(QCoreApplication::translate("PLinBootloaderClass", "3", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("PLinBootloaderClass", "\350\257\212\346\226\255", nullptr));
         lbl_lable_5->setText(QCoreApplication::translate("PLinBootloaderClass", "\351\200\211\346\213\251app\346\226\207\344\273\266", nullptr));
         btnSelectAppFile->setText(QCoreApplication::translate("PLinBootloaderClass", "...", nullptr));

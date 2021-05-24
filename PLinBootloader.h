@@ -51,6 +51,7 @@ private slots:
 	void on_btn_ExtMode_clicked(void);
 	void on_btn_ReadMode_clicked(void);
 	void on_bnt_Unlock_clicked(void);
+	void on_btn_ECUReset_clicked(void);
 	void on_btnSelectAppFile_clicked(void);
 	void on_btnOneKeyBoot_clicked(void);
 	void on_btnTest_clicked(void);

@@ -446,6 +446,43 @@ void PLinBootloader::on_bnt_Unlock_clicked(void)
 
 }
 
+void PLinBootloader::on_btn_ECUReset_clicked(void)
+{
+	uint8_t reset_number;
+	BYTE temp[8] = { 0x21,0x02,0x11,0x01,0xff,0xff,0xff,0xff };
+	if (ui.radioButton_1->isChecked() == TRUE)
+	{
+		reset_number = 1;
+	}
+	if (ui.radioButton_2->isChecked() == TRUE)
+	{
+		reset_number = 2;
+	}
+	if (ui.radioButton_3->isChecked() == TRUE)
+	{
+		reset_number = 3;
+	}
+
+	if (pd.isConnect() == RET_ERR)
+	{
+		Display(u8"硬件未连接");
+		return;
+	}
+	else
+	{
+		Display(u8"ECU Reset");
+	}
+	temp[0] = ui.lineEdit->text().toInt(NULL, 16);
+	temp[3] = reset_number;
+	TransmitID(0);//唤醒
+	Sleep(10);
+	Write3C(temp);//发送诊断请求
+	Sleep(10);
+	ReadMsg();
+	Read3D(temp[0]);//读取数据
+
+}
+
 
 void PLinBootloader::on_btnSelectAppFile_clicked(void)
 {
@@ -699,8 +736,8 @@ void PLinBootloader::on_btnErgodicDID_clicked(void)
 {
 	int IDfrom, IDto;
 	QString temp;
-	BYTE BUF[8] = { 0x0A,0x04,0x2e,0xF1,0x89,0x00,0x00,0x00 };
-	unsigned int didlist[24] = { 0xF187, 0xF189, 0xF191, 0xF1A3, 0x062E, 0x065E, 0x068E, 0x06BE, 0x06EE, 0x071E, 0x074E, 0x6031,
+	BYTE BUF[8] = { 0x0A,0x04,0x22,0xF1,0x89,0x00,0x00,0x00 };
+	unsigned int didlist[24] = { 0xF190, 0xF103, 0xF186, 0xF18B, 0xF101, 0xFD01, 0xF192, 0xF194, 0xF180, 0x071E, 0x074E, 0x6031,
 								 0x6231, 0x6431, 0x6631, 0x6831, 0x6A31, 0x6C31, 0xF15B, 0xF186, 0xF198, 0xF19E, 0xF1A2, 0xF1DF };
 	if (pd.isConnect() == RET_ERR)
 	{
@@ -711,6 +748,7 @@ void PLinBootloader::on_btnErgodicDID_clicked(void)
 	{
 		Display(u8"开始遍历");
 	}
+	BUF[0] = ui.lineEdit->text().toInt(NULL, 16);
 	temp = ui.lineID7->text();//起始ID
 	IDfrom = temp.toInt();
 	temp = ui.lineID8->text();//结束ID
@@ -732,7 +770,7 @@ void PLinBootloader::on_btnErgodicDID_clicked(void)
 		BUF[4] = didlist[DID];
 		Write3C(BUF); //发送ID帧头
 		Sleep(10);		//等待10mS
-		Read3D(0x0A);		//读取数据
+		Read3D(BUF[0]);		//读取数据
 	}
 	Display(u8"结束遍历");
 }
