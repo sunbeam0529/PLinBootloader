@@ -157,6 +157,8 @@ int PLIN_DRIVER::FreshHW(QList<QString>* HWList)
 			HWList->append(devstr);
 			AvailableHW[HWnum].hLINHW = HWtemp;
 		}
+
+		return RET_OK;
 	}
 }
 

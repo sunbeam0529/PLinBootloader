@@ -48,6 +48,12 @@
       <height>431</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
     <property name="currentIndex">
      <number>1</number>
     </property>
@@ -63,7 +69,7 @@
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>341</width>
+        <width>359</width>
         <height>121</height>
        </rect>
       </property>
@@ -91,6 +97,12 @@
        </item>
        <item row="0" column="1" colspan="3">
         <widget class="QComboBox" name="cbbSelectHW">
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <item>
           <property name="text">
            <string>PEAK-PLIN</string>
@@ -105,6 +117,12 @@
        </item>
        <item row="0" column="4">
         <widget class="QPushButton" name="btnFresh">
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>刷新</string>
          </property>
@@ -153,10 +171,23 @@
         </widget>
        </item>
        <item row="1" column="1" colspan="4">
-        <widget class="QComboBox" name="cbbSelectChenal"/>
+        <widget class="QComboBox" name="cbbSelectChenal">
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+        </widget>
        </item>
        <item row="2" column="1" colspan="2">
         <widget class="QComboBox" name="cbbSelectBaudrate">
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <item>
           <property name="text">
            <string>19200</string>
@@ -166,6 +197,12 @@
        </item>
        <item row="2" column="3">
         <widget class="QPushButton" name="btnConnect">
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>连接</string>
          </property>
@@ -173,6 +210,12 @@
        </item>
        <item row="2" column="4">
         <widget class="QPushButton" name="btnStop">
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>停止</string>
          </property>
@@ -188,11 +231,16 @@
      <widget class="QPushButton" name="btn_BootMode">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>110</x>
         <y>40</y>
-        <width>75</width>
+        <width>100</width>
         <height>23</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>BootMode</string>
@@ -203,9 +251,14 @@
        <rect>
         <x>10</x>
         <y>40</y>
-        <width>75</width>
+        <width>100</width>
         <height>23</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>AppMode</string>
@@ -214,11 +267,16 @@
      <widget class="QPushButton" name="bnt_Unlock">
       <property name="geometry">
        <rect>
-        <x>250</x>
-        <y>40</y>
+        <x>90</x>
+        <y>70</y>
         <width>75</width>
         <height>23</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>解锁</string>
@@ -228,9 +286,9 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>170</y>
+        <y>110</y>
         <width>331</width>
-        <height>197</height>
+        <height>222</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_3" columnstretch="2,5">
@@ -242,6 +300,11 @@
        </property>
        <item row="0" column="0">
         <widget class="QPushButton" name="btnDID_ReadSW">
+         <property name="font">
+          <font>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>软件版本号</string>
          </property>
@@ -249,6 +312,11 @@
        </item>
        <item row="2" column="0">
         <widget class="QPushButton" name="btnDID_ReadBoot">
+         <property name="font">
+          <font>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Boot版本号</string>
          </property>
@@ -256,6 +324,11 @@
        </item>
        <item row="1" column="0">
         <widget class="QPushButton" name="btnDID_ReadHW">
+         <property name="font">
+          <font>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>硬件版本号</string>
          </property>
@@ -272,7 +345,7 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
-           <pointsize>12</pointsize>
+           <pointsize>9</pointsize>
            <weight>50</weight>
            <bold>false</bold>
           </font>
@@ -296,7 +369,7 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
-           <pointsize>12</pointsize>
+           <pointsize>9</pointsize>
            <weight>50</weight>
            <bold>false</bold>
           </font>
@@ -320,7 +393,7 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
-           <pointsize>12</pointsize>
+           <pointsize>9</pointsize>
            <weight>50</weight>
            <bold>false</bold>
           </font>
@@ -350,7 +423,7 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
-           <pointsize>12</pointsize>
+           <pointsize>9</pointsize>
            <weight>50</weight>
            <bold>false</bold>
           </font>
@@ -365,6 +438,11 @@
        </item>
        <item row="4" column="0">
         <widget class="QPushButton" name="btnDID_ReadModel">
+         <property name="font">
+          <font>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>型号</string>
          </property>
@@ -372,6 +450,11 @@
        </item>
        <item row="3" column="0">
         <widget class="QPushButton" name="btnDID_ReadPartnum">
+         <property name="font">
+          <font>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>客户件号</string>
          </property>
@@ -388,7 +471,7 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
-           <pointsize>12</pointsize>
+           <pointsize>9</pointsize>
            <weight>50</weight>
            <bold>false</bold>
           </font>
@@ -407,10 +490,15 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>380</y>
+        <y>340</y>
         <width>81</width>
         <height>22</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="maximum">
        <number>3</number>
@@ -420,10 +508,15 @@
       <property name="geometry">
        <rect>
         <x>100</x>
-        <y>380</y>
+        <y>340</y>
         <width>75</width>
         <height>23</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>写配置</string>
@@ -432,17 +525,22 @@
      <widget class="QLineEdit" name="lineEdit">
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>60</x>
         <y>10</y>
         <width>61</width>
         <height>20</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
       <property name="inputMask">
        <string>\0\xHH</string>
       </property>
       <property name="text">
-       <string>0x21</string>
+       <string>0x0A</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_18">
@@ -454,6 +552,11 @@
         <height>16</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>NAD</string>
       </property>
@@ -461,11 +564,16 @@
      <widget class="QPushButton" name="btn_ExtMode">
       <property name="geometry">
        <rect>
-        <x>170</x>
+        <x>220</x>
         <y>40</y>
-        <width>75</width>
+        <width>100</width>
         <height>23</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>ExtMode</string>
@@ -479,6 +587,11 @@
         <width>75</width>
         <height>23</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>当前会话</string>
@@ -610,7 +723,7 @@
         <x>20</x>
         <y>70</y>
         <width>311</width>
-        <height>131</height>
+        <height>139</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
@@ -832,8 +945,8 @@
        <rect>
         <x>80</x>
         <y>30</y>
-        <width>261</width>
-        <height>31</height>
+        <width>283</width>
+        <height>38</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
@@ -888,8 +1001,8 @@
        <rect>
         <x>80</x>
         <y>80</y>
-        <width>261</width>
-        <height>31</height>
+        <width>283</width>
+        <height>38</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -944,8 +1057,8 @@
        <rect>
         <x>80</x>
         <y>130</y>
-        <width>261</width>
-        <height>31</height>
+        <width>283</width>
+        <height>38</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -1000,8 +1113,8 @@
        <rect>
         <x>80</x>
         <y>180</y>
-        <width>261</width>
-        <height>31</height>
+        <width>283</width>
+        <height>38</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -1239,7 +1352,7 @@
         <x>10</x>
         <y>90</y>
         <width>211</width>
-        <height>178</height>
+        <height>275</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_4" columnstretch="1,2">
